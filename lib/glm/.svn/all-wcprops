@@ -1,0 +1,149 @@
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm
+END
+packing.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/packing.hpp
+END
+vector_relational.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/vector_relational.hpp
+END
+mat2x2.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/mat2x2.hpp
+END
+mat3x2.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/mat3x2.hpp
+END
+mat2x3.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/mat2x3.hpp
+END
+geometric.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/geometric.hpp
+END
+mat4x2.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/mat4x2.hpp
+END
+glm.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/glm.hpp
+END
+mat2x4.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/mat2x4.hpp
+END
+mat3x3.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/mat3x3.hpp
+END
+fwd.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/fwd.hpp
+END
+mat3x4.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/mat3x4.hpp
+END
+mat4x3.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/mat4x3.hpp
+END
+mat4x4.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/mat4x4.hpp
+END
+trigonometric.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/trigonometric.hpp
+END
+exponential.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/exponential.hpp
+END
+CMakeLists.txt
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/CMakeLists.txt
+END
+common.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/common.hpp
+END
+integer.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/integer.hpp
+END
+vec2.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/vec2.hpp
+END
+ext.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/ext.hpp
+END
+vec3.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/vec3.hpp
+END
+vec4.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/vec4.hpp
+END
+matrix.hpp
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/svn/a1212249/!svn/ver/694/2014/s1/cg/assignment3/glm/matrix.hpp
+END
