@@ -10,26 +10,17 @@
 #include <string.h>
 #include <assert.h>
 
-
 #ifndef GLM_MOD_H
  #define GLM_MOD_H
 // Nate Robbins glm 
 #include "lib/glm_mod.h"
 #endif
-#include "lib/glm_mod.c"
+#include "lib/glm_mod.c" //VERY hackish (Couldn't correct linking error)
 
 #define T(x) (model->triangles[(x)])
 
 char carFilepath[] = "car/car-n.obj";
 char *model_name=carFilepath;
-/*
-//global variables from car.h: (defined using extern keyword)
-GLfloat angle;
-struct model_info my_model;
-struct shader_program_info my_program;
-glm::mat4 current_mvp; //initialise to 0
-GLMmodel* model_ptr;
-*/
 
 int init_resources()
 {

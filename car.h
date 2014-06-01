@@ -22,12 +22,7 @@
 
 using namespace std; 
 
-//our rotating world angle
-//GLfloat angle=0.0;
-
 //used for our model 
-
-
 struct model_info {
 //vertex data and indices
 GLuint vbo_model_vertices;
@@ -39,10 +34,7 @@ GLuint *model_texture_ids; //array of texture "names" one for each group
 GLfloat * vpositions;
 GLfloat * tcoords;
 };
-//struct model_info my_model;
 
-//GLMmodel* model_ptr = NULL;
-//our shader program and it's related info
 struct shader_program_info {
 GLuint program;
 GLuint attribute_coord3d;
@@ -52,12 +44,6 @@ GLuint uniform_mvp;
 GLuint uniform_texture;
 };
 
-//struct shader_program_info my_program;
-
-//our transforms
-//glm::mat4 current_mvp=glm::mat4(1.0f); //initialise to 0
-
 int init_resources();
-
 
 #endif

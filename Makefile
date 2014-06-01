@@ -8,8 +8,8 @@ GLM_MOD=lib/GLM_MOD
 
 all: kartBattle
 
-kartBattle:  soil.o glm_mod.o display.o idle.o car.o kartBattle.o image_helper.o stb_image_aug.o image_DXT.o global.o
-	$(CXX) kartBattle.o display.o idle.o car.o $(LINUX_GL_OPTIONS) SOIL.o glm_mod.o image_helper.o stb_image_aug.o image_DXT.o global.o -o kartBattle 
+kartBattle:  soil.o display.o idle.o car.o kartBattle.o image_helper.o stb_image_aug.o image_DXT.o global.o
+	$(CXX) kartBattle.o display.o idle.o car.o $(LINUX_GL_OPTIONS) SOIL.o image_helper.o stb_image_aug.o image_DXT.o global.o -o kartBattle 
 
 #
 #$(CXX) kartBattle.o display.o car.o SOIL.o glm_mod.o image_helper.o stb_image_aug.o image_DXT.o -o kartBattle 

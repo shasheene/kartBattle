@@ -5,14 +5,13 @@
 #include "display.h"
 #include "global.h"
 
-void display (void) {
-  /*  glClearColor( 255.0, 255.0, 255.0, 1.0 ); // white background
-  glClear (GL_COLOR_BUFFER_BIT); //clear window
+//Future abstraction function prototype:
+//drawObject(struct model_info model, struct shader_program_info shader_program, GLMmodel* model_ptr, glm::mat4 mvp_matrix);
+//drawObject(my_program, struct shader_program_info shader_program, GLMmodel* model_ptr, glm::mat4 mvp_matrix);
 
-  glFlush();*/
+void display (void) {
   glClearColor(1.0, 1.0, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-
 
   glUseProgram(my_program.program);
   //Now no matter what group we are going to draw from these vertices..
