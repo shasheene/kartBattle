@@ -5,7 +5,7 @@
 int main(int argc, char* argv[]) {
 
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_RGBA);//|GLUT_DEPTH
+  glutInitDisplayMode(GLUT_RGBA|GLUT_DOUBLE);//|GLUT_DEPTH);
   glutInitWindowSize(SCREENWIDTH,SCREENHEIGHT);
   /*
   //freeglut check (copied from Angel example):
@@ -19,8 +19,11 @@ int main(int argc, char* argv[]) {
   glewInit();
   
   init_resources();//car
+  //glEnable(GL_BLEND);
+  glEnable(GL_DEPTH_TEST);
 
   glutDisplayFunc(display);
+  glutIdleFunc(idle);
 
   glutMainLoop();
 
