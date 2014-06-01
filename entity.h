@@ -49,8 +49,6 @@ public:
   struct model_info my_model;
   struct shader_program_info my_program;
   GLfloat angle;
-  glm::mat4 current_mvp; //initialise to 0
-  
 };
 
 #endif

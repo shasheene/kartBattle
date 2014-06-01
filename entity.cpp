@@ -21,7 +21,6 @@ void Entity::initialize(char* carFilepath) {
   char model_name[40];
   strcpy(model_name,carFilepath); //avoids deprecated conversion
 
-
  std:cerr << "opening model " << model_name << std::endl;
   model_ptr = glmReadOBJ(model_name);
   glmUnitize(model_ptr); //scale to unit cube - may not be best if more than one object in file....
