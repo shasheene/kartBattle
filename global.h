@@ -10,6 +10,7 @@
 #include "entity.h"
 
 extern Entity* player1;
+extern Entity* player2;
 
 GLfloat degToRad (GLfloat deg);
 GLfloat radToDeg (GLfloat rad);

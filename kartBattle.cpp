@@ -4,6 +4,7 @@
 #include "global.h"
 #include "entity.h"
 Entity * player1;
+Entity * player2;
 
 int main(int argc, char* argv[]) {
 
@@ -23,6 +24,7 @@ int main(int argc, char* argv[]) {
 
 
   player1 = new Entity("car/car-n.obj");
+  player2 = new Entity("car/car-n.obj");
 
   //  init_resources();//car
   //glEnable(GL_BLEND);
