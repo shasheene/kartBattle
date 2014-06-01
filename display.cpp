@@ -10,10 +10,11 @@ void display (void) {
   glClearColor(1.0, 1.0, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   
+  //PLAYER1
   glm::vec3 axis_y(0, 1, 0);
-  glm::mat4 anim = glm::rotate(glm::mat4(1.0f),degToRad(player2->angle) , axis_y);
+  glm::mat4 anim = glm::rotate(glm::mat4(1.0f),0.0f, axis_y);
 
-  glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -4.0));
+  glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0, 0.0, -4.0));
   glm::mat4 view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));
   glm::mat4 projection = glm::perspective(45.0f, 1.0f*SCREENWIDTH/SCREENHEIGHT, 0.1f, 10.0f);
 
@@ -21,7 +22,9 @@ void display (void) {
 
  drawObject(player1, current_mvp);
 
- model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -3.0));
+ //PLAYER2
+ anim = glm::rotate(glm::mat4(1.0f),degToRad(player1->angle) , axis_y);
+ model = glm::translate(glm::mat4(1.0f), glm::vec3(1.0, 0.0, -3.0));
  current_mvp = projection * view * model * anim;
  drawObject(player2, current_mvp);
 
