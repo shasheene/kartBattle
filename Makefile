@@ -1,6 +1,6 @@
 LINUX_GL_OPTIONS= -lGLEW -lglut -lGL
 MAC_GL_OPTIONS= -framework OpenGL -framework GLUT 
-CXX = g++ $(LINUX_GL_OPTIONS)
+CXX = g++
 
 #Library base filename
 SOIL=lib/SOIL/SOIL
@@ -9,7 +9,7 @@ GLM_MOD=lib/GLM_MOD
 all: kartBattle
 
 kartBattle:  soil.o glm_mod.o display.o car.o kartBattle.o image_helper.o stb_image_aug.o image_DXT.o global.o
-	$(CXX) kartBattle.o display.o car.o SOIL.o glm_mod.o image_helper.o stb_image_aug.o image_DXT.o global.o -o kartBattle 
+	$(CXX) kartBattle.o display.o car.o $(LINUX_GL_OPTIONS) SOIL.o glm_mod.o image_helper.o stb_image_aug.o image_DXT.o global.o -o kartBattle 
 
 #
 #$(CXX) kartBattle.o display.o car.o SOIL.o glm_mod.o image_helper.o stb_image_aug.o image_DXT.o -o kartBattle 

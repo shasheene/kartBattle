@@ -4,14 +4,8 @@
 
 #include "display.h"
 #include <cstdio>
-#include "globals.h"
-//global variables from car.h: (defined using extern keyword)
-/*extern GLfloat angle;
-extern struct model_info my_model;
-extern struct shader_program_info my_program;
-extern glm::mat4 current_mvp; //initialise to 0
-extern GLMmodel* model_ptr;
-*/
+#include "global.h"
+
 void display (void) {
   /*  glClearColor( 255.0, 255.0, 255.0, 1.0 ); // white background
   glClear (GL_COLOR_BUFFER_BIT); //clear window
