@@ -4,7 +4,7 @@
 
 #include "display.h"
 #include "global.h"
-
+#include <cstdio>
 //Future abstraction function prototype:
 //drawObject(struct model_info model, struct shader_program_info shader_program, GLMmodel* model_ptr, glm::mat4 mvp_matrix);
 //drawObject(my_program, struct shader_program_info shader_program, GLMmodel* model_ptr, glm::mat4 mvp_matrix);
@@ -12,8 +12,17 @@
 void display (void) {
   glClearColor(1.0, 1.0, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+  
+  struct model_info my_model = player1->my_model;
+  struct shader_program_info my_program = player1->my_program;
+  glm::mat4 current_mvp=glm::mat4(1.0f); //initialise to 0
+
+  GLfloat angle  = player1->angle;
+  GLMmodel* model_ptr = player1->model_ptr;
+  
 
   glUseProgram(my_program.program);
+
   //Now no matter what group we are going to draw from these vertices..
   glEnableVertexAttribArray(my_program.attribute_coord3d);
   // Describe our vertices array to OpenGL (it can't guess its format automatically)
@@ -62,7 +71,7 @@ void display (void) {
         current_group++;
           break;
           }
-  /* Push each element in buffer_vertices to the vertex shader */
+  //Push each element in buffer_vertices to the vertex shader
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_model.ibo_model_elements[current_group]);
   //how many elements in what we want to draw?? Sure, we could have kept this as state rather than enquiring now.....
   int size;  glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
@@ -70,12 +79,13 @@ void display (void) {
  //   glUniform3fv(my_program.uniform_Kd,1,(const GLfloat *)  &(model_ptr->materials[group->material].diffuse));
 
   glBindTexture(GL_TEXTURE_2D, my_model.model_texture_ids[current_group]);
-   glUniform1i(my_program.uniform_texture, /*GL_TEXTURE*/0); 
+   glUniform1i(my_program.uniform_texture, 0);//0 is GL_TEXTURE
 
    glDrawElements(GL_TRIANGLES, size/sizeof(GLuint), GL_UNSIGNED_INT, 0);
         group=group->next;
         current_group++;
    }//end looping through groups
+
     glutSwapBuffers();
 
 

@@ -1,70 +1,77 @@
 /*
- * car.cpp
+ * entity.cpp
  */
 
-#include "car.h"
+#include "entity.h"
 
 #ifndef GLM_MOD_H
  #define GLM_MOD_H
 // Nate Robbins glm 
 #include "lib/glm_mod.h"
 #endif
-//#include "lib/glm_mod.c" //VERY hackish (Couldn't correct linking error)
+#include "lib/glm_mod.c" //VERY hackish (Couldn't correct linking error)
+#include <iostream>
+
+Entity::Entity(char* carFilepath) {
+  initialize(carFilepath);
+}
+
+void Entity::initialize(char* carFilepath) {
+  model_ptr = NULL;
+  char model_name[40];
+  strcpy(model_name,carFilepath); //avoids deprecated conversion
 
 
-//char carFilepath2[] = "car/car-n.obj";
-//char *model_name=carFilepath2;
+ std:cerr << "opening model " << model_name << std::endl;
+  model_ptr = glmReadOBJ(model_name);
+  glmUnitize(model_ptr); //scale to unit cube - may not be best if more than one object in file....
 
-int init_resources()
-{
-  /*   std:cerr << "opening model " << model_name << std::endl;
-    model_ptr = glmReadOBJ(model_name);
-    glmUnitize(model_ptr); //scale to unit cube - may not be best if more than one object in file....
-// don't need normals until do lighting...    glmFacetNormals(model_ptr);
-//ditto    glmVertexNormals(model_ptr, 90.0);
+  // don't need normals until do lighting...    glmFacetNormals(model_ptr);
+  //ditto    glmVertexNormals(model_ptr, 90.0);
+  
+  //we are going to have to re-organise the data. We can't have two indices (one for texture and one for position) 
+  //so we are going to have to create a new buffer for positions ordered by model triangles ppp ppp ppp etc
+  //and one for texturecoords tt tt tt etc
+  //we will then use the *triangle* index of the group to create the indices in these buffers for drawing a group....
+  my_model.vpositions=  (GLfloat *) malloc(sizeof(GLfloat)*model_ptr->numtriangles*3*3);
+  my_model.tcoords=  (GLfloat *) malloc(sizeof(GLfloat)*model_ptr->numtriangles*3*2);
+  //loop through the entire model triangles and put in the actual data
+  for (int i=0;i<model_ptr->numtriangles;i++)
+    {
+      my_model.tcoords[i*2*3+0]=model_ptr->texcoords[model_ptr->triangles[i].tindices[0]*2+0];
+      my_model.tcoords[i*2*3+1]=model_ptr->texcoords[model_ptr->triangles[i].tindices[0]*2+1];
+      
+      my_model.tcoords[i*2*3+2]=model_ptr->texcoords[model_ptr->triangles[i].tindices[1]*2+0];
+      my_model.tcoords[i*2*3+3]=model_ptr->texcoords[model_ptr->triangles[i].tindices[1]*2+1];
+      
+      my_model.tcoords[i*2*3+4]=model_ptr->texcoords[model_ptr->triangles[i].tindices[2]*2+0];
+      my_model.tcoords[i*2*3+5]=model_ptr->texcoords[model_ptr->triangles[i].tindices[2]*2+1];
+      
+      my_model.vpositions[i*3*3+0]=model_ptr->vertices[model_ptr->triangles[i].vindices[0]*3+0];
+      my_model.vpositions[i*3*3+1]=model_ptr->vertices[model_ptr->triangles[i].vindices[0]*3+1];
+      my_model.vpositions[i*3*3+2]=model_ptr->vertices[model_ptr->triangles[i].vindices[0]*3+2];
+      
+      my_model.vpositions[i*3*3+3]=model_ptr->vertices[model_ptr->triangles[i].vindices[1]*3+0];
+      my_model.vpositions[i*3*3+4]=model_ptr->vertices[model_ptr->triangles[i].vindices[1]*3+1];
+      my_model.vpositions[i*3*3+5]=model_ptr->vertices[model_ptr->triangles[i].vindices[1]*3+2];
+      
+      my_model.vpositions[i*3*3+6]=model_ptr->vertices[model_ptr->triangles[i].vindices[2]*3+0];
+      my_model.vpositions[i*3*3+7]=model_ptr->vertices[model_ptr->triangles[i].vindices[2]*3+1];
+      my_model.vpositions[i*3*3+8]=model_ptr->vertices[model_ptr->triangles[i].vindices[2]*3+2];
+    }
 
-//we are going to have to re-organise the data. We can't have two indices (one for texture and one for position) 
-//so we are going to have to create a new buffer for positions ordered by model triangles ppp ppp ppp etc
-//and one for texturecoords tt tt tt etc
-//we will then use the *triangle* index of the group to create the indices in these buffers for drawing a group....
-my_model.vpositions=  (GLfloat *) malloc(sizeof(GLfloat)*model_ptr->numtriangles*3*3);
-my_model.tcoords=  (GLfloat *) malloc(sizeof(GLfloat)*model_ptr->numtriangles*3*2);
-//loop through the entire model triangles and put in the actual data
-for (int i=0;i<model_ptr->numtriangles;i++)
-   {
-     my_model.tcoords[i*2*3+0]=model_ptr->texcoords[model_ptr->triangles[i].tindices[0]*2+0];
-     my_model.tcoords[i*2*3+1]=model_ptr->texcoords[model_ptr->triangles[i].tindices[0]*2+1];
-
-     my_model.tcoords[i*2*3+2]=model_ptr->texcoords[model_ptr->triangles[i].tindices[1]*2+0];
-     my_model.tcoords[i*2*3+3]=model_ptr->texcoords[model_ptr->triangles[i].tindices[1]*2+1];
-
-     my_model.tcoords[i*2*3+4]=model_ptr->texcoords[model_ptr->triangles[i].tindices[2]*2+0];
-     my_model.tcoords[i*2*3+5]=model_ptr->texcoords[model_ptr->triangles[i].tindices[2]*2+1];
-
-     my_model.vpositions[i*3*3+0]=model_ptr->vertices[model_ptr->triangles[i].vindices[0]*3+0];
-     my_model.vpositions[i*3*3+1]=model_ptr->vertices[model_ptr->triangles[i].vindices[0]*3+1];
-     my_model.vpositions[i*3*3+2]=model_ptr->vertices[model_ptr->triangles[i].vindices[0]*3+2];
-
-     my_model.vpositions[i*3*3+3]=model_ptr->vertices[model_ptr->triangles[i].vindices[1]*3+0];
-     my_model.vpositions[i*3*3+4]=model_ptr->vertices[model_ptr->triangles[i].vindices[1]*3+1];
-     my_model.vpositions[i*3*3+5]=model_ptr->vertices[model_ptr->triangles[i].vindices[1]*3+2];
-
-     my_model.vpositions[i*3*3+6]=model_ptr->vertices[model_ptr->triangles[i].vindices[2]*3+0];
-     my_model.vpositions[i*3*3+7]=model_ptr->vertices[model_ptr->triangles[i].vindices[2]*3+1];
-     my_model.vpositions[i*3*3+8]=model_ptr->vertices[model_ptr->triangles[i].vindices[2]*3+2];
-
-   }
+  cerr << "Model info is " << my_model.vbo_model_vertices << endl; 
   // get a name for my vertex vbo
   glGenBuffers(1, &(my_model.vbo_model_vertices));
- //now we say we will refer to this buffer
+  //now we say we will refer to this buffer
   glBindBuffer(GL_ARRAY_BUFFER, my_model.vbo_model_vertices);
- //for this buffer we say what the buffer looks like and where it lives
+  //for this buffer we say what the buffer looks like and where it lives
   glBufferData(GL_ARRAY_BUFFER, sizeof(*(my_model.vpositions))*(model_ptr->numtriangles)*3*3, my_model.vpositions, GL_STATIC_DRAW);
   // get a name for my vertex texture vbo
   glGenBuffers(1, &(my_model.vbo_model_texcoords));
- //now we say we will refer to this buffer
+  //now we say we will refer to this buffer
   glBindBuffer(GL_ARRAY_BUFFER, my_model.vbo_model_texcoords);
- //for this buffer we say what the buffer looks like and where it lives
+  //for this buffer we say what the buffer looks like and where it lives
   glBufferData(GL_ARRAY_BUFFER, sizeof(*(my_model.tcoords))*(model_ptr->numtriangles)*3*2, my_model.tcoords, GL_STATIC_DRAW);
 
   std::cerr << "allocated buffers for texcoords: " << model_ptr->numtexcoords << " and vertices: " <<  model_ptr->numvertices  << std::endl;
@@ -117,18 +124,18 @@ for (int i=0;i<model_ptr->numtriangles;i++)
     
 //now the data for a group is actually an index into a triangle which is then something that gives three indices into our vertex array. 
 
-my_model.ibo_model_buffer[current_group] = (GLuint *) malloc(sizeof(GLuint)*3*(group->numtriangles));
-for (int i=0;i<(group->numtriangles);i++)
-   {
-     my_model.ibo_model_buffer[current_group][3*i+0]=group->triangles[i]*3+0;
-     my_model.ibo_model_buffer[current_group][3*i+1]=group->triangles[i]*3+1;
-     my_model.ibo_model_buffer[current_group][3*i+2]=group->triangles[i]*3+2;
-   }
- //now we say we will refer to this buffer
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_model.ibo_model_elements[current_group]);
- //for this buffer we say what the buffer looks like and where it lives
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*3*(group->numtriangles), my_model.ibo_model_buffer[current_group], GL_STATIC_DRAW);
-
+   my_model.ibo_model_buffer[current_group] = (GLuint *) malloc(sizeof(GLuint)*3*(group->numtriangles));
+   for (int i=0;i<(group->numtriangles);i++)
+     {
+       my_model.ibo_model_buffer[current_group][3*i+0]=group->triangles[i]*3+0;
+       my_model.ibo_model_buffer[current_group][3*i+1]=group->triangles[i]*3+1;
+       my_model.ibo_model_buffer[current_group][3*i+2]=group->triangles[i]*3+2;
+     }
+   //now we say we will refer to this buffer
+   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, my_model.ibo_model_elements[current_group]);
+   //for this buffer we say what the buffer looks like and where it lives
+   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint)*3*(group->numtriangles), my_model.ibo_model_buffer[current_group], GL_STATIC_DRAW);
+   
         group=group->next;
         current_group++;
 
@@ -207,34 +214,32 @@ void main(void) { \n \
 	exit( EXIT_FAILURE );
     }
 
-
-
   const char* attribute_name;
   attribute_name = "coord3d";
   my_program.attribute_coord3d = glGetAttribLocation(my_program.program, attribute_name);
   if (my_program.attribute_coord3d == -1) {
     cerr << "Could not bind attribute " << attribute_name << endl;
-    return 0;
+    exit(0);
   }
   attribute_name = "vtexcoords";
   my_program.attribute_texcoord = glGetAttribLocation(my_program.program, attribute_name);
   if (my_program.attribute_texcoord == -1) {
     cerr << "Could not bind attribute " << attribute_name << endl;
-    return 0;
+    exit(0);
   }
   const char* uniform_name;
   uniform_name = "mvp";
   my_program.uniform_mvp = glGetUniformLocation(my_program.program, uniform_name);
   if (my_program.uniform_mvp == -1) {
     cerr << "Could not bind uniform " <<  uniform_name << endl;
-    return 0;
+    exit(0);
   }
 
    uniform_name = "mytexture";
   my_program.uniform_texture = glGetUniformLocation(my_program.program, uniform_name);
   if (my_program.uniform_texture == -1) {
 //    fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
-    return 0;
-    }*/
-  return 1;
+    exit(0);
+  }
 }
+

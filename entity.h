@@ -1,19 +1,9 @@
 /*
- * car.h
+ * entity.h
  */
 
-#ifndef CAR_H
-#define CAR_H
-
-#include <stdlib.h>
-#include <math.h>
-#include <iostream>
-#include <stack>
-
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#ifndef ENTITY_H
+#define ENTITY_H
 
 #include "glLibAndConst.h"
 
@@ -23,11 +13,8 @@
 #include "lib/glm_mod.h"
 #endif
 
-#include "global.h"
-
 #define T(x) (model->triangles[(x)])
 
-using namespace std; 
 
 //used for our model 
 struct model_info {
@@ -51,6 +38,19 @@ GLuint uniform_mvp;
 GLuint uniform_texture;
 };
 
-int init_resources();
+using namespace std; 
+
+class Entity {
+public:
+  Entity(char*);
+  Entity();
+  void initialize(char*);
+  GLMmodel* model_ptr;
+  struct model_info my_model;
+  struct shader_program_info my_program;
+  GLfloat angle;
+  glm::mat4 current_mvp; //initialise to 0
+  
+};
 
 #endif
