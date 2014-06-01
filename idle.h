@@ -7,6 +7,7 @@
 
 #include "glLibAndConst.h"
 #include "global.h"
+#include "entity.h"
 
 void idle();
 
