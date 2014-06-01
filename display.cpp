@@ -7,20 +7,33 @@
 #include <cstdio>
 //Future abstraction function prototype:
 //drawObject(struct model_info model, struct shader_program_info shader_program, GLMmodel* model_ptr, glm::mat4 mvp_matrix);
-//drawObject(my_program, struct shader_program_info shader_program, GLMmodel* model_ptr, glm::mat4 mvp_matrix);
+//
 
 void display (void) {
   glClearColor(1.0, 1.0, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   
-  struct model_info my_model = player1->my_model;
-  struct shader_program_info my_program = player1->my_program;
-  glm::mat4 current_mvp=glm::mat4(1.0f); //initialise to 0
+  glm::vec3 axis_y(0, 1, 0);
+  glm::mat4 anim = glm::rotate(glm::mat4(1.0f),degToRad(player1->angle) , axis_y);
 
-  GLfloat angle  = player1->angle;
-  GLMmodel* model_ptr = player1->model_ptr;
+  glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -4.0));
+  glm::mat4 view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));
+  glm::mat4 projection = glm::perspective(45.0f, 1.0f*SCREENWIDTH/SCREENHEIGHT, 0.1f, 10.0f);
+
+ glm::mat4 current_mvp=glm::mat4(1.0f); //initialise to 0
+ glm:current_mvp = projection * view * model * anim; // this is the overall transorm of our composited model - rotate it, translate it away from origin. Then position our viewer and set the projection.
+
+  drawObject(player1, current_mvp);
   
+    glutSwapBuffers();
+}
 
+void drawObject(Entity * my_entity,  glm::mat4 current_mvp){
+  struct model_info my_model = my_entity->my_model;
+  struct shader_program_info my_program = my_entity->my_program;
+  GLfloat angle  = my_entity->angle;
+  GLMmodel* model_ptr = my_entity->model_ptr;
+  
   glUseProgram(my_program.program);
 
   //Now no matter what group we are going to draw from these vertices..
@@ -48,16 +61,6 @@ void display (void) {
     0                  // offset of first element
   );
 
-  glm::vec3 axis_y(0, 1, 0);
-  glm::mat4 anim = glm::rotate(glm::mat4(1.0f),degToRad(angle) , axis_y);
-
-  glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -4.0));
-  glm::mat4 view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));
-  glm::mat4 projection = glm::perspective(45.0f, 1.0f*SCREENWIDTH/SCREENHEIGHT, 0.1f, 10.0f);
-
-  current_mvp = projection * view * model * anim; // this is the overall transorm of our composited model - rotate it, translate it away from origin. Then position our viewer and set the projection.
-
-  
     glUniformMatrix4fv(my_program.uniform_mvp, 1, GL_FALSE, glm::value_ptr(current_mvp));
    glActiveTexture(GL_TEXTURE0);
 //loop through groups
@@ -85,8 +88,5 @@ void display (void) {
         group=group->next;
         current_group++;
    }//end looping through groups
-
-    glutSwapBuffers();
-
-
 }
+

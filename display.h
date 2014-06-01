@@ -9,5 +9,6 @@
 #include "entity.h"
 
 void display();
+void drawObject(Entity * my_entity,  glm::mat4 current_mvp);
 
 #endif
