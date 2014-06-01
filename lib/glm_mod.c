@@ -18,8 +18,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-#include "glm_mod.h"
 
+#ifndef GLM_MOD_H
+#define GLM_MOD_H
+#include "glm_mod.h"
+#endif
 
 #define T(x) (model->triangles[(x)])
 
@@ -464,7 +467,8 @@ glmFirstPass(GLMmodel* model, FILE* file)
   char      buf[128];
 
   /* make a default group */
-  group = glmAddGroup(model, "default");
+  char default_group[] = "default";//prevents warning when using C++ compiler
+  group = glmAddGroup(model, default_group);
 
   numvertices = numnormals = numtexcoords = numtriangles = 0;
   while(fscanf(file, "%s", buf) != EOF) {

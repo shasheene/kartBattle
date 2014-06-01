@@ -1890,9 +1890,9 @@ int query_NPOT_capability( void )
 		}
 	}
 	/*	let the user know if we can do non-power-of-two textures or not	*/
-	return has_NPOT_capability;
+	//return has_NPOT_capability;
 	//hack from forum to fix segfault:
-	//return SOIL_CAPABILITY_PRESENT;
+	return SOIL_CAPABILITY_PRESENT;
 }
 
 int query_tex_rectangle_capability( void )

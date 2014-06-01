@@ -10,18 +10,22 @@
 #include <iostream>
 #include <stack>
 
-using namespace std; 
-
 #include "glLibAndConst.h"
 
+#ifndef GLM_MOD_H
+ #define GLM_MOD_H
+// Nate Robbins glm 
+#include "lib/glm_mod.h"
+#endif
+
+#include "global.h"
+
+using namespace std; 
+
 //our rotating world angle
-GLfloat angle=0.0;
+//GLfloat angle=0.0;
 
 //used for our model 
-
-
-char carFilepath[] = "car/car-n.obj";
-char *model_name=carFilepath;
 
 
 struct model_info {
@@ -34,9 +38,10 @@ GLuint vbo_model_texcoords;
 GLuint *model_texture_ids; //array of texture "names" one for each group
 GLfloat * vpositions;
 GLfloat * tcoords;
-} my_model;
+};
+//struct model_info my_model;
 
-GLMmodel* model_ptr = NULL;
+//GLMmodel* model_ptr = NULL;
 //our shader program and it's related info
 struct shader_program_info {
 GLuint program;
@@ -45,10 +50,12 @@ GLuint attribute_texcoord;
 //GLuint uniform_Kd;
 GLuint uniform_mvp;
 GLuint uniform_texture;
-} my_program;
+};
+
+//struct shader_program_info my_program;
 
 //our transforms
-glm::mat4 current_mvp=glm::mat4(1.0f); //initialise to 0
+//glm::mat4 current_mvp=glm::mat4(1.0f); //initialise to 0
 
 int init_resources();
 

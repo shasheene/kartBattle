@@ -6,6 +6,7 @@
 #define DISPLAY_H
 
 #include "glLibAndConst.h"
+#include "car.h"
 
 void display();
 
