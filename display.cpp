@@ -3,7 +3,6 @@
  */
 
 #include "display.h"
-#include <cstdio>
 #include "global.h"
 
 void display (void) {
@@ -42,7 +41,7 @@ void display (void) {
   );
 
   glm::vec3 axis_y(0, 1, 0);
-  glm::mat4 anim = glm::rotate(glm::mat4(1.0f), angle, axis_y);
+  glm::mat4 anim = glm::rotate(glm::mat4(1.0f),degToRad(angle) , axis_y);
 
   glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0, 0.0, -4.0));
   glm::mat4 view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));
@@ -78,7 +77,7 @@ void display (void) {
         group=group->next;
         current_group++;
    }//end looping through groups
-  glutSwapBuffers();
+    glutSwapBuffers();
 
 
 }

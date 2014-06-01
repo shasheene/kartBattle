@@ -8,8 +8,8 @@ GLM_MOD=lib/GLM_MOD
 
 all: kartBattle
 
-kartBattle:  soil.o glm_mod.o display.o car.o kartBattle.o image_helper.o stb_image_aug.o image_DXT.o global.o
-	$(CXX) kartBattle.o display.o car.o $(LINUX_GL_OPTIONS) SOIL.o glm_mod.o image_helper.o stb_image_aug.o image_DXT.o global.o -o kartBattle 
+kartBattle:  soil.o glm_mod.o display.o idle.o car.o kartBattle.o image_helper.o stb_image_aug.o image_DXT.o global.o
+	$(CXX) kartBattle.o display.o idle.o car.o $(LINUX_GL_OPTIONS) SOIL.o glm_mod.o image_helper.o stb_image_aug.o image_DXT.o global.o -o kartBattle 
 
 #
 #$(CXX) kartBattle.o display.o car.o SOIL.o glm_mod.o image_helper.o stb_image_aug.o image_DXT.o -o kartBattle 
@@ -19,6 +19,9 @@ kartBattle.o: main.cpp glLibAndConst.h kartBattle.cpp kartBattle.h
 
 display.o: display.cpp display.h glLibAndConst.h
 	$(CXX) -c display.cpp
+
+idle.o: idle.cpp idle.h glLibAndConst.h
+	$(CXX) -c idle.cpp
 
 car.o: car.cpp car.h glLibAndConst.h glm_mod.o
 	$(CXX) -c car.cpp
@@ -43,5 +46,7 @@ stb_image_aug.o:
 	$(CC) -c lib/stb_image_aug.c
 
 
+# -w means if file exists and writable
 clean:
-	rm kartBattle *.o
+	if [ -w kartBattle ]; then rm kartBattle; fi;
+	rm *.o

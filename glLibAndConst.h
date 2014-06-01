@@ -1,5 +1,5 @@
 /*
- * openGLLibs.h
+ * glLibAndConst.h
  */
 
 #ifndef INCLUDED_OPENGL_LIBS
