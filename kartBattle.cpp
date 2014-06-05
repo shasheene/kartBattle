@@ -5,6 +5,8 @@
 #include "entity.h"
 Entity * player1;
 Entity * player2;
+Entity * weapon;
+bool * MultiKeys;
 
 int main(int argc, char* argv[]) {
 
@@ -25,6 +27,12 @@ int main(int argc, char* argv[]) {
 
   player1 = new Entity("car/car-n.obj");
   player2 = new Entity("car/car-n.obj");
+  weapon = new Entity("car/car-n.obj");
+
+	MultiKeys = new bool[256];
+	for(int i=0;i<256;i++){
+		MultiKeys[i] = 0;
+	}
 
   //  init_resources();//car
   //glEnable(GL_BLEND);
@@ -32,6 +40,9 @@ int main(int argc, char* argv[]) {
 
   glutDisplayFunc(display);
   glutIdleFunc(idle);
+
+  glutKeyboardFunc( keyboardPress );
+  glutKeyboardUpFunc( keyboardNoPress );
 
   glutMainLoop();
 
