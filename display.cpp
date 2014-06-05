@@ -6,27 +6,100 @@
 #include "global.h"
 #include <cstdio>
 
+
+//Could place these inside of the object files and refer to them from there
+
+	//Follow Player 1
+  glm::vec3 P1view1(0.0, 0.5, -2.0);
+  glm::vec3 P1view2(0.0, 0.0, 0.0);
+  glm::vec3 P1view3(0.0, 1.0, 0.0);
+
+  glm::vec3 P1carPos(0.0, 0.0, 0.0);
+
+	//Follow Player 2
+  glm::vec3 P2view1(2.0, 0.5, -2.0);
+  glm::vec3 P2view2(2.0, 0.0, 0.0);
+  glm::vec3 P2view3(0.0, 1.0, 0.0);
+
+  glm::vec3 P2carPos(2.0, 0.0, 0.0);
+
+	//weapon
+  glm::vec3 WeaPos(2.0, 0.0, 0.0);
+  int WeaTimer = 50000;
+
+
+
 void display (void) {
+	Movement();
+
+  glm::vec3 axis_y(0, 1, 0);
+  glm::mat4 anim;
+  glm::mat4 view;
+  glm::mat4 model;
+  glm::mat4 projection;
+  glm::mat4 current_mvp;
+
   glClearColor(1.0, 1.0, 1.0, 1.0);
   glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
   
+	//1st screen top
+  glViewport(0, SCREENHEIGHT/2+1, SCREENWIDTH, SCREENHEIGHT/2);
+  view = glm::lookAt(P1view1, P1view2, P1view3);
+  projection = glm::perspective(45.0f, 1.0f*SCREENWIDTH/SCREENHEIGHT, 0.1f, 100.0f);
+
   //PLAYER1
-  glm::vec3 axis_y(0, 1, 0);
-  glm::mat4 anim = glm::rotate(glm::mat4(1.0f),0.0f, axis_y);
-
-  glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0, 0.0, -4.0));
-  glm::mat4 view = glm::lookAt(glm::vec3(0.0, 2.0, 0.0), glm::vec3(0.0, 0.0, -4.0), glm::vec3(0.0, 1.0, 0.0));
-  glm::mat4 projection = glm::perspective(45.0f, 1.0f*SCREENWIDTH/SCREENHEIGHT, 0.1f, 10.0f);
-
- glm::mat4 current_mvp = projection * view * model * anim; // this is the overall transorm of our composited model - rotate it, translate it away from origin. Then position our viewer and set the projection.
+  anim = glm::rotate(glm::mat4(1.0f),degToRad(player1->angle), axis_y);
+  model = glm::translate(glm::mat4(1.0f), P1carPos);
+  current_mvp = projection * view * model * anim;
 
  drawObject(player1, current_mvp);
 
  //PLAYER2
- anim = glm::rotate(glm::mat4(1.0f),degToRad(player1->angle) , axis_y);
- model = glm::translate(glm::mat4(1.0f), glm::vec3(1.0, 0.0, -3.0));
+ anim = glm::rotate(glm::mat4(1.0f), degToRad(player2->angle), axis_y);
+ model = glm::translate(glm::mat4(1.0f), P2carPos);
  current_mvp = projection * view * model * anim;
+
  drawObject(player2, current_mvp);
+
+  //Weapon
+  if(WeaTimer < 5000){
+	 anim = glm::rotate(glm::mat4(1.0f), degToRad(weapon->angle), axis_y);
+	 model = glm::translate(glm::mat4(1.0f), WeaPos);
+	 current_mvp = projection * view * model * anim;
+
+	 drawObject(weapon, current_mvp);
+  }
+
+
+//---------------------------
+
+
+	//2ed screen, bottom
+  glViewport(0, 0, SCREENWIDTH, SCREENHEIGHT/2);
+  view = glm::lookAt(P2view1, P2view2, P2view3);
+
+  //PLAYER1
+  anim = glm::rotate(glm::mat4(1.0f),degToRad(player1->angle), axis_y);
+  model = glm::translate(glm::mat4(1.0f), P1carPos);
+  current_mvp = projection * view * model * anim;
+
+ drawObject(player1, current_mvp);
+
+ //PLAYER2
+ anim = glm::rotate(glm::mat4(1.0f),degToRad(player2->angle) , axis_y);
+ model = glm::translate(glm::mat4(1.0f), P2carPos);
+ current_mvp = projection * view * model * anim;
+
+ drawObject(player2, current_mvp);
+
+  if(WeaTimer < 5000){
+	 anim = glm::rotate(glm::mat4(1.0f), degToRad(weapon->angle), axis_y);
+	 model = glm::translate(glm::mat4(1.0f), WeaPos);
+	 current_mvp = projection * view * model * anim;
+
+	 drawObject(weapon, current_mvp);
+  }
+
 
  glutSwapBuffers();
 }
@@ -91,4 +164,151 @@ void drawObject(Entity * my_entity,  glm::mat4 current_mvp){
         current_group++;
    }//end looping through groups
 }
+
+
+
+void keyboardPress( unsigned char key, int x, int y )
+{
+	MultiKeys[key] = true;
+}
+
+void keyboardNoPress( unsigned char key, int x, int y )
+{
+	MultiKeys[key] = false;
+}
+
+void Movement(void)
+{
+		//Exit
+	if(MultiKeys[033]){
+        exit( EXIT_SUCCESS );
+	}
+
+		//Movement Player 1
+	if(MultiKeys['w']){
+			P1carPos[0] = P1carPos[0]+(0.005 * sin(degToRad(player1->angle)));
+			P1carPos[2] = P1carPos[2]+(0.005 * cos(degToRad(player1->angle)));
+			P1view2 = P1carPos;
+			P1view1[0] = P1view2[0]-(2 * sin(degToRad(player1->angle)));
+			P1view1[2] = P1view2[2]-(2 * cos(degToRad(player1->angle)));
+	}
+	if(MultiKeys['s']){
+			P1carPos[0] = P1carPos[0]-(0.005 * sin(degToRad(player1->angle)));
+			P1carPos[2] = P1carPos[2]-(0.005 * cos(degToRad(player1->angle)));
+			P1view2 = P1carPos;
+			P1view1[0] = P1view2[0]-(2 * sin(degToRad(player1->angle)));
+			P1view1[2] = P1view2[2]-(2 * cos(degToRad(player1->angle)));
+	}
+		//Turning forwards
+	if(MultiKeys['a'] && MultiKeys['w']){
+		//P1carPos[0] = P1carPos[0]+0.005;
+		if(player1->angle > 360){
+			player1->angle = 0;
+			player1->angle = player1->angle + 0.2;
+		}
+		else{
+			player1->angle = player1->angle + 0.2;
+		}
+	}
+	if(MultiKeys['d'] && MultiKeys['w']){
+		//P1carPos[0] = P1carPos[0]-0.005;
+		if(player1->angle < 0){
+			player1->angle = 360;
+			player1->angle = player1->angle - 0.2;
+		}
+		else{
+			player1->angle = player1->angle - 0.2;
+		}
+	}
+		//Turning Backwards
+	if(MultiKeys['d'] && MultiKeys['s']){
+		//P1carPos[0] = P1carPos[0]+0.005;
+		if(player1->angle > 360){
+			player1->angle = 0;
+			player1->angle = player1->angle + 0.2;
+		}
+		else{
+			player1->angle = player1->angle + 0.2;
+		}
+	}
+	if(MultiKeys['a'] && MultiKeys['s']){
+		//P1carPos[0] = P1carPos[0]-0.005;
+		if(player1->angle < 0){
+			player1->angle = 360;
+			player1->angle = player1->angle - 0.2;
+		}
+		else{
+			player1->angle = player1->angle - 0.2;
+		}
+	}
+
+
+		//Movement Player 2
+	if(MultiKeys['i']){
+			P2carPos[0] = P2carPos[0]+(0.005 * sin(degToRad(player2->angle)));
+			P2carPos[2] = P2carPos[2]+(0.005 * cos(degToRad(player2->angle)));
+			P2view2 = P2carPos;
+			P2view1[0] = P2view2[0]-(2 * sin(degToRad(player2->angle)));
+			P2view1[2] = P2view2[2]-(2 * cos(degToRad(player2->angle)));
+	}
+	if(MultiKeys['k']){
+			P2carPos[0] = P2carPos[0]-(0.005 * sin(degToRad(player2->angle)));
+			P2carPos[2] = P2carPos[2]-(0.005 * cos(degToRad(player2->angle)));
+			P2view2 = P2carPos;
+			P2view1[0] = P2view2[0]-(2 * sin(degToRad(player2->angle)));
+			P2view1[2] = P2view2[2]-(2 * cos(degToRad(player2->angle)));
+	}
+		//Turning forwards
+	if(MultiKeys['j'] && MultiKeys['i']){
+		//P2carPos[0] = P2carPos[0]+0.005;
+		if(player2->angle > 360){
+			player2->angle = 0;
+			player2->angle = player2->angle + 0.2;
+		}
+		else{
+			player2->angle = player2->angle + 0.2;
+		}
+	}
+	if(MultiKeys['l'] && MultiKeys['i']){
+		//P2carPos[0] = P2carPos[0]-0.005;
+		if(player2->angle < 0){
+			player2->angle = 360;
+			player2->angle = player2->angle - 0.2;
+		}
+		else{
+			player2->angle = player2->angle - 0.2;
+		}
+	}
+		//Turning Backwards
+	if(MultiKeys['l'] && MultiKeys['k']){
+		//P2carPos[0] = P2carPos[0]+0.005;
+		if(player2->angle > 360){
+			player2->angle = 0;
+			player2->angle = player2->angle + 0.2;
+		}
+		else{
+			player2->angle = player2->angle + 0.2;
+		}
+	}
+	if(MultiKeys['j'] && MultiKeys['k']){
+		//P2carPos[0] = P2carPos[0]-0.005;
+		if(player2->angle < 0){
+			player2->angle = 360;
+			player2->angle = player2->angle - 0.2;
+		}
+		else{
+			player2->angle = player2->angle - 0.2;
+		}
+	}
+
+		//Fire Weapon Player 1
+	if(MultiKeys['e']){
+		WeaPos = P1carPos;
+		weapon->angle = player1->angle;
+			WeaPos[0] = WeaPos[0]+(1 * sin(degToRad(weapon->angle)));
+			WeaPos[2] = WeaPos[2]+(1 * cos(degToRad(weapon->angle)));
+		WeaTimer = 0;
+	}
+}
+
 
