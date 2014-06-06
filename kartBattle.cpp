@@ -25,9 +25,9 @@ int main(int argc, char* argv[]) {
   glewInit();
 
 
-  player1 = new Entity("car/car-n.obj");
-  player2 = new Entity("car/car-n.obj");
-  weapon = new Entity("car/car-n.obj");
+  player1 = new Entity("res/car/car-n.obj");
+  player2 = new Entity("res/car/car-n.obj");
+  weapon = new Entity("res/car/car-n.obj");
 
 	MultiKeys = new bool[256];
 	for(int i=0;i<256;i++){
