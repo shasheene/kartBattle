@@ -33,6 +33,7 @@ void Entity::initialize(char* carFilepath) {
   //and one for texturecoords tt tt tt etc
   //we will then use the *triangle* index of the group to create the indices in these buffers for drawing a group....
   my_model.vpositions=  (GLfloat *) malloc(sizeof(GLfloat)*model_ptr->numtriangles*3*3);
+  my_model.npositions=  (GLfloat *) malloc(sizeof(GLfloat)*model_ptr->numtriangles*3*3);
   my_model.tcoords=  (GLfloat *) malloc(sizeof(GLfloat)*model_ptr->numtriangles*3*2);
   //loop through the entire model triangles and put in the actual data
   for (int i=0;i<model_ptr->numtriangles;i++)
@@ -57,6 +58,19 @@ void Entity::initialize(char* carFilepath) {
       my_model.vpositions[i*3*3+6]=model_ptr->vertices[model_ptr->triangles[i].vindices[2]*3+0];
       my_model.vpositions[i*3*3+7]=model_ptr->vertices[model_ptr->triangles[i].vindices[2]*3+1];
       my_model.vpositions[i*3*3+8]=model_ptr->vertices[model_ptr->triangles[i].vindices[2]*3+2];
+
+
+      my_model.npositions[i*3*3+0]=model_ptr->normals[model_ptr->triangles[i].nindices[0]*3+0];
+      my_model.npositions[i*3*3+1]=model_ptr->normals[model_ptr->triangles[i].nindices[0]*3+1];
+      my_model.npositions[i*3*3+2]=model_ptr->normals[model_ptr->triangles[i].nindices[0]*3+2];
+      
+      my_model.npositions[i*3*3+3]=model_ptr->normals[model_ptr->triangles[i].nindices[1]*3+0];
+      my_model.npositions[i*3*3+4]=model_ptr->normals[model_ptr->triangles[i].nindices[1]*3+1];
+      my_model.npositions[i*3*3+5]=model_ptr->normals[model_ptr->triangles[i].nindices[1]*3+2];
+      
+      my_model.npositions[i*3*3+6]=model_ptr->normals[model_ptr->triangles[i].nindices[2]*3+0];
+      my_model.npositions[i*3*3+7]=model_ptr->normals[model_ptr->triangles[i].nindices[2]*3+1];
+      my_model.npositions[i*3*3+8]=model_ptr->normals[model_ptr->triangles[i].nindices[2]*3+2];
     }
 
   cerr << "Model info is " << my_model.vbo_model_vertices << endl; 
@@ -66,6 +80,14 @@ void Entity::initialize(char* carFilepath) {
   glBindBuffer(GL_ARRAY_BUFFER, my_model.vbo_model_vertices);
   //for this buffer we say what the buffer looks like and where it lives
   glBufferData(GL_ARRAY_BUFFER, sizeof(*(my_model.vpositions))*(model_ptr->numtriangles)*3*3, my_model.vpositions, GL_STATIC_DRAW);
+
+  // get a name for my normal vbo
+  glGenBuffers(1, &(my_model.vbo_model_normals));
+  //now we say we will refer to this buffer
+  glBindBuffer(GL_ARRAY_BUFFER, my_model.vbo_model_normals);
+  //for this buffer we say what the buffer looks like and where it lives
+  glBufferData(GL_ARRAY_BUFFER, sizeof(*(my_model.npositions))*(model_ptr->numtriangles)*3*3, my_model.npositions, GL_STATIC_DRAW);
+
   // get a name for my vertex texture vbo
   glGenBuffers(1, &(my_model.vbo_model_texcoords));
   //now we say we will refer to this buffer
@@ -145,23 +167,116 @@ const  GLchar * my_vertex_shaders[] = {
 //vertex shader 0
 "attribute vec3 coord3d;\n \
 attribute vec2 vtexcoords; \n \
+attribute vec3 v_normal;\n \
 uniform mat4 mvp;\n \
+uniform mat4 m;\n \
+uniform mat3 m_3x3_inv_transp;\n \
+uniform mat4 v_inv;\n \
 varying vec2 texCoords;\n \
-\n \
-void main(void) {\n \
-  gl_Position = mvp * vec4(coord3d, 1.0);\n \
+varying vec3 diffuseColor;\n \
+varying vec3 specularColor;\n \
+struct lightSource\n \
+{\n \
+  vec4 position;\n \
+  vec4 diffuse;\n \
+  vec4 specular;\n \
+  float constantAttenuation, linearAttenuation, quadraticAttenuation;\n \
+  float spotCutoff, spotExponent;\n \
+  vec3 spotDirection;\n \
+};\n \
+lightSource light0 = lightSource(\n \
+  vec4(0.0,  2.0,  2.0, 1.0),\n \
+  vec4(1.0,  1.0,  1.0, 1.0),\n \
+  vec4(1.0,  1.0,  1.0, 1.0),\n \
+  0.0, 1.0, 0.0,\n \
+  180.0, 0.0,\n \
+  vec3(0.0, 0.0, 0.0)\n \
+);\n \
+vec4 scene_ambient = vec4(0.2, 0.2, 0.2, 1.0);\n \
+struct material\n \
+{\n \
+  vec4 ambient;\n \
+  vec4 diffuse;\n \
+  vec4 specular;\n \
+  float shininess;\n \
+};\n \
+material mymaterial = material(\n \
+  vec4(0.2, 0.2, 0.2, 1.0),\n \
+  vec4(1.0, 0.8, 0.8, 1.0),\n \
+  vec4(1.0, 1.0, 1.0, 1.0),\n \
+  5.0\n \
+);\n \
+void main(void)\n \
+{\n \
+  vec4 v_coord4 = vec4(coord3d, 1.0);\n \
+  vec3 normalDirection = normalize(m_3x3_inv_transp * v_normal);\n \
+  vec3 viewDirection = normalize(vec3(v_inv * vec4(0.0, 0.0, 0.0, 1.0) - m * v_coord4));\n \
+  vec3 lightDirection;\n \
+  float attenuation;\n \
+  if (light0.position.w == 0.0) // directional light\n \
+    {\n \
+      attenuation = 1.0; // no attenuation\n \
+      lightDirection = normalize(vec3(light0.position));\n \
+    }\n \
+  else\n \
+    {\n \
+      vec3 vertexToLightSource = vec3(light0.position - m * v_coord4);\n \
+      float distance = length(vertexToLightSource);\n \
+      lightDirection = normalize(vertexToLightSource);\n \
+      attenuation = 1.0 / (light0.constantAttenuation\n \
+                           + light0.linearAttenuation * distance\n \
+                           + light0.quadraticAttenuation * distance * distance);\n \
+      if (light0.spotCutoff <= 90.0)\n \
+        {\n \
+          float clampedCosine = max(0.0, dot(-lightDirection, normalize(light0.spotDirection)));\n \
+          if (clampedCosine < cos(radians(light0.spotCutoff)))\n \
+            {\n \
+              attenuation = 0.0;\n \
+            }\n \
+          else\n \
+            {\n \
+              attenuation = attenuation * pow(clampedCosine, light0.spotExponent);\n \
+            }\n \
+        }\n \
+    }\n \
+  vec3 ambientLighting = vec3(scene_ambient);\n \
+  vec3 diffuseReflection = attenuation\n \
+    * vec3(light0.diffuse)\n \
+    * max(0.0, dot(normalDirection, lightDirection));\n \
+  vec3 specularReflection;\n \
+  if (dot(normalDirection, lightDirection) < 0.0)\n \
+    {\n \
+      specularReflection = vec3(0.0, 0.0, 0.0);\n \
+    }\n \
+  else\n \
+    {\n \
+      specularReflection = attenuation * vec3(light0.specular) * vec3(mymaterial.specular)\n \
+        * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)),\n \
+              mymaterial.shininess);\n \
+    }\n \
+  diffuseColor = ambientLighting + diffuseReflection;\n \
+  specularColor = specularReflection;\n \
   texCoords=vtexcoords; \n \
-}\n" 
+  gl_Position = mvp * v_coord4;\n \
+}\n"
+
+
+
 };
 const  GLchar * my_fragment_shaders[] = {
 //fragement shader 0
 "varying vec3 f_color; \n \
 uniform sampler2D mytexture; \n \
 varying vec2 texCoords;\n \
+varying vec3 diffuseColor;\n \
+varying vec3 specularColor;\n \
  \n \
 void main(void) { \n \
-  gl_FragColor = texture2D(mytexture,texCoords); \n \
+      gl_FragColor = vec4(diffuseColor \n \
+        * vec3(texture2D(mytexture, texCoords)) \n \
+        + specularColor, 1.0); \n \
 }\n "
+
 };
   GLint compile_ok= GL_FALSE;
   GLint link_ok = GL_FALSE;
@@ -220,6 +335,12 @@ void main(void) { \n \
     cerr << "Could not bind attribute " << attribute_name << endl;
     exit(0);
   }
+  attribute_name = "v_normal";
+  my_program.attribute_v_normal = glGetAttribLocation(my_program.program, attribute_name);
+  if (my_program.attribute_v_normal == -1) {
+    cerr << "Could not bind attribute " << attribute_name << endl;
+    exit(0);
+  }
   attribute_name = "vtexcoords";
   my_program.attribute_texcoord = glGetAttribLocation(my_program.program, attribute_name);
   if (my_program.attribute_texcoord == -1) {
@@ -240,5 +361,37 @@ void main(void) { \n \
 //    fprintf(stderr, "Could not bind uniform %s\n", uniform_name);
     exit(0);
   }
+
+
+
+  uniform_name = "m";
+  my_program.uniform_m = glGetUniformLocation(my_program.program, uniform_name);
+  if (my_program.uniform_m == -1) {
+    cerr << "Could not bind uniform " <<  uniform_name << endl;
+    exit(0);
+  }
+
+  uniform_name = "m_3x3_inv_transp";
+  my_program.uniform_m_3x3_inv_transp = glGetUniformLocation(my_program.program, uniform_name);
+  if (my_program.uniform_m_3x3_inv_transp == -1) {
+    cerr << "Could not bind uniform " <<  uniform_name << endl;
+    exit(0);
+  }
+
+  uniform_name = "v_inv";
+  my_program.uniform_v_inv = glGetUniformLocation(my_program.program, uniform_name);
+  if (my_program.uniform_v_inv == -1) {
+    cerr << "Could not bind uniform " <<  uniform_name << endl;
+    exit(0);
+  }
+
+
+
+
+
+
+
+
+
 }
 
