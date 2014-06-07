@@ -32,9 +32,9 @@ glm::vec3 carBounding[4] = {
     glm::vec3(0.0,0.0, 0.0)
   };
 
-  player1 = new Entity("res/car1/car-n.obj", glm::vec3(0.0,0.0, 0.0), carBounding);
-  player2 = new Entity("res/car2/car-n.obj", glm::vec3(2.0, 0.0, 0.0), carBounding);
-  weapon = new Entity("res/car1/car-n.obj", glm::vec3(2.0, 0.0, 0.0 ), carBounding);
+  player1 = new Entity("res/car1/car-n.obj", glm::vec3(0.0,0.0, 0.0), carBounding, 1);
+  player2 = new Entity("res/car2/car-n.obj", glm::vec3(2.0, 0.0, 0.0), carBounding, 1);
+  weapon = new Entity("res/ball/Football.obj", glm::vec3(2.0, 0.0, 0.0 ), carBounding, 0.4);
   
   entitiesArray = new Entity*[NUMENTITIES];
   entitiesArray[0] = player1;

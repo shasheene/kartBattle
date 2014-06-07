@@ -12,8 +12,8 @@
 #include "lib/glm_mod.c" //VERY hackish (Couldn't correct linking error)
 #include <iostream>
 
-Entity::Entity(char* carFilepath, glm::vec3 posVector, glm::vec3* bounding) {
-  initialize(carFilepath);
+Entity::Entity(char* carFilepath, glm::vec3 posVector, glm::vec3* bounding, GLfloat size) {
+  initialize(carFilepath, size);
   glm::vec3 pos = posVector;
   for (int i=0;i<4;i++){
     boundingBox[i] = bounding[i];
@@ -29,7 +29,7 @@ void Entity::update(Entity ** entityArray, int numEntities){
 }
 
 
-void Entity::initialize(char* carFilepath) {
+void Entity::initialize(char* carFilepath, GLfloat size) {
   model_ptr = NULL;
   char model_name[40];
   strcpy(model_name,carFilepath); //avoids deprecated conversion
@@ -37,6 +37,7 @@ void Entity::initialize(char* carFilepath) {
  std:cerr << "opening model " << model_name << std::endl;
   model_ptr = glmReadOBJ(model_name);
   glmUnitize(model_ptr); //scale to unit cube - may not be best if more than one object in file....
+  glmScale(model_ptr, size);
 
   // don't need normals until do lighting...    glmFacetNormals(model_ptr);
   //ditto    glmVertexNormals(model_ptr, 90.0);
@@ -198,8 +199,8 @@ struct lightSource\n \
   vec3 spotDirection;\n \
 };\n \
 lightSource light0 = lightSource(\n \
-  vec4(0.0,  2.0,  2.0, 1.0),\n \
-  vec4(1.0,  1.0,  1.0, 1.0),\n \
+  vec4(0.0,  4.0,  2.0, 1.0),\n \
+  vec4(5.0,  5.0,  5.0, 5.0),\n \
   vec4(1.0,  1.0,  1.0, 1.0),\n \
   0.0, 1.0, 0.0,\n \
   180.0, 0.0,\n \
