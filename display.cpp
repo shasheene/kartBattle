@@ -20,7 +20,7 @@
   glm::vec3 P2view3(0.0, 1.0, 0.0);
 
 	//weapon
-  glm::vec3 WeaPos(2.0, 0.0, 0.0);
+  glm::vec3 WeaPos(0.0, -0.1, 0.0);
   int WeaTimer = 50000;
 
 
@@ -323,10 +323,9 @@ void Movement(void)
 
 		//Fire Weapon Player 1
 	if(MultiKeys['e']){
-		WeaPos = player1->pos;
 		weapon->angle = player1->angle;
-			WeaPos[0] = WeaPos[0]+(1 * sin(degToRad(weapon->angle)));
-			WeaPos[2] = WeaPos[2]+(1 * cos(degToRad(weapon->angle)));
+		WeaPos[0] = player1->pos[0]+(1 * sin(degToRad(weapon->angle)));
+		WeaPos[2] = player1->pos[2]+(1 * cos(degToRad(weapon->angle)));
 		WeaTimer = 0;
 	}
 }
