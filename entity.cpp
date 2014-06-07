@@ -12,9 +12,22 @@
 #include "lib/glm_mod.c" //VERY hackish (Couldn't correct linking error)
 #include <iostream>
 
-Entity::Entity(char* carFilepath) {
+Entity::Entity(char* carFilepath, glm::vec3 posVector, glm::vec3* bounding) {
   initialize(carFilepath);
+  glm::vec3 pos = posVector;
+  for (int i=0;i<4;i++){
+    boundingBox[i] = bounding[i];
+  }
 }
+
+void Entity::update(Entity ** entityArray, int numEntities){
+  for (int i=0;i<numEntities;i++) {
+    if (entityArray[i]!=this) {
+      //if (entityArray[i].pos[0] < this.pos[0]
+    }
+  }
+}
+
 
 void Entity::initialize(char* carFilepath) {
   model_ptr = NULL;

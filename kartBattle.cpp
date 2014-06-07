@@ -6,6 +6,7 @@
 Entity * player1;
 Entity * player2;
 Entity * weapon;
+Entity ** entitiesArray;
 bool * MultiKeys;
 
 int main(int argc, char* argv[]) {
@@ -24,11 +25,22 @@ int main(int argc, char* argv[]) {
   glewExperimental = GL_TRUE;
   glewInit();
 
+glm::vec3 carBounding[4] = {
+    glm::vec3(0.0,0.0, 0.0),
+    glm::vec3(0.0,0.0, 0.0),
+    glm::vec3(0.0,0.0, 0.0),
+    glm::vec3(0.0,0.0, 0.0)
+  };
 
-  player1 = new Entity("res/car/car-n.obj");
-  player2 = new Entity("res/car/car-n.obj");
-  weapon = new Entity("res/car/car-n.obj");
-
+  player1 = new Entity("res/car1/car-n.obj", glm::vec3(0.0,0.0, 0.0), carBounding);
+  player2 = new Entity("res/car2/car-n.obj", glm::vec3(2.0, 0.0, 0.0), carBounding);
+  weapon = new Entity("res/car1/car-n.obj", glm::vec3(2.0, 0.0, 0.0 ), carBounding);
+  
+  entitiesArray = new Entity*[NUMENTITIES];
+  entitiesArray[0] = player1;
+  entitiesArray[1] = player2;
+  entitiesArray[2] = weapon;
+  
 	MultiKeys = new bool[256];
 	for(int i=0;i<256;i++){
 		MultiKeys[i] = 0;

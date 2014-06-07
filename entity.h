@@ -46,13 +46,18 @@ using namespace std;
 
 class Entity {
 public:
-  Entity(char*);
+  Entity(char*, glm::vec3, glm::vec3*);
   Entity();
+  void update(Entity **, int);
+
   void initialize(char*);
   GLMmodel* model_ptr;
   struct model_info my_model;
   struct shader_program_info my_program;
   GLfloat angle;
+
+  glm::vec3 pos;
+  glm::vec3 boundingBox[4];
 };
 
 #endif
