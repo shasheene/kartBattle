@@ -227,13 +227,23 @@ struct lightSource\n \
   float spotCutoff, spotExponent;\n \
   vec3 spotDirection;\n \
 };\n \
+const int numberOfLights = 2;\n \
+lightSource lights[numberOfLights];\n \
 lightSource light0 = lightSource(\n \
-  vec4(0.0,  6.0,  2.0, 1.0),\n \
-  vec4(10.0,  10.0,  10.0, 10.0),\n \
+  vec4(0.0,  6.0,  4.0, 1.0),\n \
+  vec4(8.0,  8.0,  8.0, 8.0),\n \
   vec4(1.0,  1.0,  1.0, 1.0),\n \
   0.0, 1.0, 0.0,\n \
   180.0, 0.0,\n \
-  vec3(0.0, 0.0, 0.0)\n \
+  vec3(0.0, 0.0, 4.0)\n \
+);\n \
+lightSource light1 = lightSource(\n \
+  vec4(0.0,  5.0,  -4.0, 1.0),\n \
+  vec4(5.0,  5.0,  5.0, 5.0),\n \
+  vec4(1.0,  1.0,  1.0, 1.0),\n \
+  0.0, 1.0, 0.0,\n \
+  180.0, 0.0,\n \
+  vec3(0.0, 0.0, -4.0)\n \
 );\n \
 vec4 scene_ambient = vec4(0.2, 0.2, 0.2, 1.0);\n \
 struct material\n \
@@ -251,40 +261,44 @@ material mymaterial = material(\n \
 );\n \
 void main(void)\n \
 {\n \
+  lights[0] = light0;\n \
+  lights[1] = light1;\n \
   vec4 v_coord4 = vec4(coord3d, 1.0);\n \
   vec3 normalDirection = normalize(m_3x3_inv_transp * v_normal);\n \
   vec3 viewDirection = normalize(vec3(v_inv * vec4(0.0, 0.0, 0.0, 1.0) - m * v_coord4));\n \
   vec3 lightDirection;\n \
   float attenuation;\n \
-  if (light0.position.w == 0.0) // directional light\n \
+  for (int index = 0; index < numberOfLights; index++)\n \
+  {\n \
+  if (lights[index].position.w == 0.0) // directional light\n \
     {\n \
       attenuation = 1.0; // no attenuation\n \
-      lightDirection = normalize(vec3(light0.position));\n \
+      lightDirection = normalize(vec3(lights[index].position));\n \
     }\n \
   else\n \
     {\n \
-      vec3 vertexToLightSource = vec3(light0.position - m * v_coord4);\n \
+      vec3 vertexToLightSource = vec3(lights[index].position - m * v_coord4);\n \
       float distance = length(vertexToLightSource);\n \
       lightDirection = normalize(vertexToLightSource);\n \
-      attenuation = 1.0 / (light0.constantAttenuation\n \
-                           + light0.linearAttenuation * distance\n \
-                           + light0.quadraticAttenuation * distance * distance);\n \
-      if (light0.spotCutoff <= 90.0)\n \
+      attenuation = 1.0 / (lights[index].constantAttenuation\n \
+                           + lights[index].linearAttenuation * distance\n \
+                           + lights[index].quadraticAttenuation * distance * distance);\n \
+      if (lights[index].spotCutoff <= 90.0)\n \
         {\n \
-          float clampedCosine = max(0.0, dot(-lightDirection, normalize(light0.spotDirection)));\n \
-          if (clampedCosine < cos(radians(light0.spotCutoff)))\n \
+          float clampedCosine = max(0.0, dot(-lightDirection, normalize(lights[index].spotDirection)));\n \
+          if (clampedCosine < cos(radians(lights[index].spotCutoff)))\n \
             {\n \
               attenuation = 0.0;\n \
             }\n \
           else\n \
             {\n \
-              attenuation = attenuation * pow(clampedCosine, light0.spotExponent);\n \
+              attenuation = attenuation * pow(clampedCosine, lights[index].spotExponent);\n \
             }\n \
         }\n \
     }\n \
   vec3 ambientLighting = vec3(scene_ambient);\n \
   vec3 diffuseReflection = attenuation\n \
-    * vec3(light0.diffuse)\n \
+    * vec3(lights[index].diffuse)\n \
     * max(0.0, dot(normalDirection, lightDirection));\n \
   vec3 specularReflection;\n \
   if (dot(normalDirection, lightDirection) < 0.0)\n \
@@ -293,12 +307,13 @@ void main(void)\n \
     }\n \
   else\n \
     {\n \
-      specularReflection = attenuation * vec3(light0.specular) * vec3(mymaterial.specular)\n \
+      specularReflection = attenuation * vec3(lights[index].specular) * vec3(mymaterial.specular)\n \
         * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)),\n \
               mymaterial.shininess);\n \
     }\n \
-  diffuseColor = ambientLighting + diffuseReflection;\n \
-  specularColor = specularReflection;\n \
+  diffuseColor = diffuseColor + ambientLighting + diffuseReflection;\n \
+  specularColor = specularColor + specularReflection;\n \
+  }\n \
   texCoords=vtexcoords; \n \
   gl_Position = mvp * v_coord4;\n \
 }\n"
