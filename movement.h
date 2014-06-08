@@ -9,6 +9,8 @@
 #include "global.h"
 #include "entity.h"
 
+void keyboardPress( unsigned char, int, int );
+void keyboardNoPress( unsigned char, int, int );
 void movement();
 
 #endif

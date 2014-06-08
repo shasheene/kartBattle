@@ -14,10 +14,13 @@
 
 Entity::Entity(char* carFilepath, glm::vec3 posVector, glm::vec3* bounding, GLfloat size) {
   initialize(carFilepath, size);
-  glm::vec3 pos = posVector;
+  pos = posVector;
+  angle = 0;
   
-  viewSrc = glm::vec3(0.0,0.5,0.0);
-  viewDest = pos;
+  viewSrc[0] = posVector[0];
+  viewSrc[1] = 0.5;
+  viewSrc[2] = posVector[2] - 2;
+  viewDest = posVector;
   viewUp = glm::vec3(0.0,1.0,0.0);
 
 
@@ -33,10 +36,10 @@ void Entity::update(Entity ** entityArray, int numEntities){
     }
   }
  
-  viewDest = pos;
+  //viewDest = pos;
   //Calculate 
-  viewSrc[0] = viewDest[0]-(2 * sin(angle*3.14159265/180));//degToRad(angle)
-  viewSrc[2] = viewDest[2]-(2 * cos(angle*3.14159265/180));
+  //viewSrc[0] = viewDest[0]-(2 * sin(angle*3.14159265/180));//degToRad(angle)
+ // viewSrc[2] = viewDest[2]-(2 * cos(angle*3.14159265/180));
 }
 
 

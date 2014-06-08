@@ -17,6 +17,7 @@
 
 
 
+
 void display (void) {
   movement();
   for (int i=0; i<NUMENTITIES; i++) {
@@ -42,6 +43,7 @@ void display (void) {
 
   //PLAYER1
   anim = glm::rotate(glm::mat4(1.0f),degToRad(player1->angle), axis_y);
+
   model = glm::translate(glm::mat4(1.0f), player1->pos);
   current_mvp = projection * view * model * anim;
 
