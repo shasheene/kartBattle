@@ -12,7 +12,6 @@
 //Could place these inside of the object files and refer to them from there
 
 	//weapon
-  glm::vec3 WeaPos(0.0, -0.1, 0.0);
   int WeaTimer = 50000;
 
 
@@ -59,7 +58,7 @@ void display (void) {
   //Weapon
   if(WeaTimer < 5000){
 	 anim = glm::rotate(glm::mat4(1.0f), degToRad(weapon->angle), axis_y);
-	 model = glm::translate(glm::mat4(1.0f), WeaPos);
+	 model = glm::translate(glm::mat4(1.0f), weapon->pos);
 	 current_mvp = projection * view * model * anim;
 
 	 drawObject(weapon, current_mvp, model, view);
@@ -89,7 +88,7 @@ void display (void) {
 
   if(WeaTimer < 5000){
 	 anim = glm::rotate(glm::mat4(1.0f), degToRad(weapon->angle), axis_y);
-	 model = glm::translate(glm::mat4(1.0f), WeaPos);
+	 model = glm::translate(glm::mat4(1.0f), weapon->pos);
 	 current_mvp = projection * view * model * anim;
 
 	 drawObject(weapon, current_mvp, model, view);

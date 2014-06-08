@@ -10,17 +10,20 @@
 #include "lib/glm_mod.h"
 #endif
 #include "lib/glm_mod.c" //VERY hackish (Couldn't correct linking error)
-#include <iostream>
 
-Entity::Entity(char* carFilepath, glm::vec3 posVector, glm::vec3* bounding, GLfloat size) {
+using namespace std;
+
+Entity::Entity(char* carFilepath, glm::vec3 posVector, GLfloat facing, glm::vec3* bounding, GLfloat size) {
   initialize(carFilepath, size);
   pos = posVector;
-  angle = 0;
+  angle = facing;
   
-  viewSrc[0] = posVector[0];
-  viewSrc[1] = 0.5;
-  viewSrc[2] = posVector[2] - 2;
+
   viewDest = posVector;
+  viewSrc[0] = viewDest[0]-(2 * sin(degToRad(angle)));
+  viewSrc[1] = 0.5;
+  viewSrc[2] = viewDest[2]-(2 * cos(degToRad(angle)));
+
   viewUp = glm::vec3(0.0,1.0,0.0);
 
 
@@ -32,14 +35,26 @@ Entity::Entity(char* carFilepath, glm::vec3 posVector, glm::vec3* bounding, GLfl
 void Entity::update(Entity ** entityArray, int numEntities){
   for (int i=0;i<numEntities;i++) {
     if (entityArray[i]!=this) {
-      //if (entityArray[i].pos[0] < this.pos[0]
+      GLfloat x_speed = cos(degToRad(entityArray[i]->angle));
+      GLfloat y_speed = sin(degToRad(entityArray[i]->angle));
+
+      cerr << "entityArray["<< i <<"] " << entityArray[i]->pos[0] << "," << entityArray[i]->pos[2] << endl;
+
+      //For now, opposite's position, to our bounding box
+      if ((entityArray[i]->pos[2] < (this->pos[2] + this->boundingBox[0][2])//top horizontal, bottom horizontal
+	   && entityArray[i]->pos[2] > (this->pos[2] + this->boundingBox[1][2])) 
+	  
+	  && (entityArray[i]->pos[0] > (this->pos[0] + this->boundingBox[2][0]) // left vert, right vert
+	      && entityArray[i]->pos[0] < (this->pos[0] + this->boundingBox[3][0]))
+	  ) {
+	if (i ==2) {
+	    entityArray[i]->angle += 45;
+	  }
+      }
+      cerr << "COLLIDED\n";
+    
     }
   }
- 
-  //viewDest = pos;
-  //Calculate 
-  //viewSrc[0] = viewDest[0]-(2 * sin(angle*3.14159265/180));//degToRad(angle)
- // viewSrc[2] = viewDest[2]-(2 * cos(angle*3.14159265/180));
 }
 
 

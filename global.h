@@ -19,7 +19,6 @@ extern Entity* weapon;
 extern Entity ** entitiesArray;
 
 extern bool * MultiKeys;
-extern glm::vec3 WeaPos;
 extern int WeaTimer;
 extern int timeClock;
 extern int timePrev;

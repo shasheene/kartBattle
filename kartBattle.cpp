@@ -27,15 +27,15 @@ int main(int argc, char* argv[]) {
   glewInit();
 
 glm::vec3 carBounding[4] = {
-    glm::vec3(0.0,0.0, 0.0),
-    glm::vec3(0.0,0.0, 0.0),
-    glm::vec3(0.0,0.0, 0.0),
-    glm::vec3(0.0,0.0, 0.0)
+  glm::vec3(0.0,0.0, 1.0),//top horizontal line
+  glm::vec3(0.0,0.0, -1.0),//bottom horizontal line
+  glm::vec3(-1.0,0.0, 0.0), //left vertical line
+  glm::vec3(1.0,0.0, 0.0) //right vertical line
   };
 
-  player1 = new Entity("res/car1/car-n.obj", glm::vec3(0.0, 0.0, 0.0), carBounding, 1);
-  player2 = new Entity("res/car2/car-n.obj", glm::vec3(2.0, 0.0, 0.0), carBounding, 1);
-  weapon = new Entity("res/ball/Football.obj", glm::vec3(2.0, 0.0, 0.0 ), carBounding, 0.4);
+ player1 = new Entity("res/car1/car-n.obj", glm::vec3(2.0, 0.0, -5.0), degToRad(0.0f), carBounding, 1.0);
+ player2 = new Entity("res/car2/car-n.obj", glm::vec3(2.0, 0.0, 5.0), 180.0f, carBounding, 1.0);
+ weapon = new Entity("res/ball/Football.obj", glm::vec3(2.0, 0.0, 0.0 ), 0.0f, carBounding, 0.4);
 
   entitiesArray = new Entity*[NUMENTITIES];
   entitiesArray[0] = player1;

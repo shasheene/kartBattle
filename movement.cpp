@@ -23,7 +23,7 @@ void movement(void)
   }
 	int time = glutGet(GLUT_ELAPSED_TIME)/1000;
 		//Movement Player 1
-	if(MultiKeys['w']){
+	if(MultiKeys['w'] ){
 			player1->pos[0] = player1->pos[0]+(timeDiff*0.005 * sin(degToRad(player1->angle)));
 			player1->pos[2] = player1->pos[2]+(timeDiff*0.005 * cos(degToRad(player1->angle)));
 			player1->viewDest = player1->pos;
@@ -143,8 +143,8 @@ void movement(void)
 		//Fire Weapon Player 1
 	if(MultiKeys['e']){
 		weapon->angle = player1->angle;
-		WeaPos[0] = player1->pos[0]+(1.3 * sin(degToRad(weapon->angle)));
-		WeaPos[2] = player1->pos[2]+(1.3 * cos(degToRad(weapon->angle)));
+		weapon->pos[0] = player1->pos[0]+(1.3 * sin(degToRad(weapon->angle)));
+		weapon->pos[2] = player1->pos[2]+(1.3 * cos(degToRad(weapon->angle)));
 		WeaTimer = 0;
 	}
 }

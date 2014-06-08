@@ -16,8 +16,8 @@ void idle() {
 	timePrev = timeClock;
 
 	if(WeaTimer < 5000){
-		WeaPos[0] = WeaPos[0]+(timeDiff*0.02 * sin(degToRad(weapon->angle)));
-		WeaPos[2] = WeaPos[2]+(timeDiff*0.02 * cos(degToRad(weapon->angle)));
+		weapon->pos[0] = weapon->pos[0]+(timeDiff*0.02 * sin(degToRad(weapon->angle)));
+		weapon->pos[2] = weapon->pos[2]+(timeDiff*0.02 * cos(degToRad(weapon->angle)));
   		WeaTimer ++;
 	}
 

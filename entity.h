@@ -5,7 +5,10 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+
 #include "glLibAndConst.h"
+#include <math.h>
+#include <iostream>
 
 #ifndef GLM_MOD_H
  #define GLM_MOD_H
@@ -46,7 +49,7 @@ using namespace std;
 
 class Entity {
 public:
-  Entity(char*, glm::vec3, glm::vec3*, GLfloat);
+  Entity(char*, glm::vec3, GLfloat, glm::vec3*, GLfloat);
   Entity();
   void update(Entity **, int);
 
@@ -63,6 +66,9 @@ public:
   glm::vec3 viewSrc;
   glm::vec3 viewDest;
   glm::vec3 viewUp;
+
+  glm::mat4 anim;
+
 };
 
 #endif
