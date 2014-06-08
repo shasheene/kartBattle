@@ -25,10 +25,5 @@ extern int timeClock;
 extern int timePrev;
 extern int timeDiff;
 
-GLfloat degToRad (GLfloat deg);
-GLfloat radToDeg (GLfloat rad);
-
-
-
 #endif
 

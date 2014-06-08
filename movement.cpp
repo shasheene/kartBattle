@@ -3,9 +3,6 @@
  */
 
 #include "movement.h"
-#include <iostream>
-#include "global.h"
-
 
 void keyboardPress( unsigned char key, int x, int y )
 {

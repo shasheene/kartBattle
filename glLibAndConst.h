@@ -21,5 +21,8 @@
 #define SCREENWIDTH 800
 #define SCREENHEIGHT 640
 
+GLfloat degToRad (GLfloat deg);
+GLfloat radToDeg (GLfloat rad);
+
 #endif
 
