@@ -6,6 +6,7 @@
 #include <iostream>
 #include "global.h"
 
+
 void keyboardPress( unsigned char key, int x, int y )
 {
 	MultiKeys[key] = true;
@@ -28,6 +29,9 @@ void movement(void)
 	if(MultiKeys['w']){
 			player1->pos[0] = player1->pos[0]+(0.005 * sin(degToRad(player1->angle)));
 			player1->pos[2] = player1->pos[2]+(0.005 * cos(degToRad(player1->angle)));
+			player1->viewDest = player1->pos;
+			player1->viewSrc[0] = player1->viewDest[0]-(2 * sin(degToRad(player1->angle)));
+			player1->viewSrc[2] = player1->viewDest[2]-(2 * cos(degToRad(player1->angle)));
 
 	}
 	if(MultiKeys['s']){
