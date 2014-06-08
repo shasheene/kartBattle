@@ -8,8 +8,8 @@ GLM_MOD=lib/GLM_MOD
 
 all: kartBattle
 
-kartBattle:  soil.o display.o idle.o entity.o kartBattle.o image_helper.o stb_image_aug.o image_DXT.o global.o movement.o
-	$(CXX) kartBattle.o display.o idle.o entity.o movement.o $(LINUX_GL_OPTIONS) SOIL.o image_helper.o stb_image_aug.o image_DXT.o global.o -o kartBattle 
+kartBattle:  soil.o display.o idle.o entity.o kartBattle.o image_helper.o stb_image_aug.o image_DXT.o global.o movement.o glLibAndConst.o
+	$(CXX) kartBattle.o display.o idle.o entity.o movement.o glLibAndConst.o $(LINUX_GL_OPTIONS) SOIL.o image_helper.o stb_image_aug.o image_DXT.o global.o -o kartBattle 
 
 #
 #$(CXX) kartBattle.o display.o car.o SOIL.o glm_mod.o image_helper.o stb_image_aug.o image_DXT.o -o kartBattle 
@@ -28,6 +28,9 @@ entity.o: entity.cpp entity.h glLibAndConst.h glm_mod.o
 
 global.o: global.cpp global.h glLibAndConst.h
 	$(CXX) -c global.cpp
+
+glLibAndConst.o: glLibAndConst.cpp glLibAndConst.h
+	$(CXX) -c glLibAndConst.cpp
 
 movement.o: movement.cpp movement.h global.h glLibAndConst.h entity.h
 	$(CXX) -c movement.cpp
