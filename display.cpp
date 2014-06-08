@@ -17,6 +17,7 @@
 
 
 
+
 void display (void) {
   movement();
   for (int i=0; i<NUMENTITIES; i++) {

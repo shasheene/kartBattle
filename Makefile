@@ -20,7 +20,7 @@ kartBattle.o: main.cpp glLibAndConst.h kartBattle.cpp kartBattle.h movement.h
 display.o: display.cpp display.h glLibAndConst.h movement.h
 	$(CXX) -c display.cpp
 
-idle.o: idle.cpp idle.h glLibAndConst.h
+idle.o: idle.cpp idle.h glLibAndConst.h global.h
 	$(CXX) -c idle.cpp
 
 entity.o: entity.cpp entity.h glLibAndConst.h glm_mod.o
