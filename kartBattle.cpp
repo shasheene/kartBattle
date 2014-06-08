@@ -3,6 +3,7 @@
 #include "kartBattle.h"
 #include "global.h"
 #include "entity.h"
+#include "movement.h"
 Entity * player1;
 Entity * player2;
 Entity * weapon;
@@ -35,13 +36,13 @@ glm::vec3 carBounding[4] = {
   player1 = new Entity("res/car1/car-n.obj", glm::vec3(0.0,0.0, 0.0), carBounding, 1);
   player2 = new Entity("res/car2/car-n.obj", glm::vec3(2.0, 0.0, 0.0), carBounding, 1);
   weapon = new Entity("res/ball/Football.obj", glm::vec3(2.0, 0.0, 0.0 ), carBounding, 0.4);
-  
+
   entitiesArray = new Entity*[NUMENTITIES];
   entitiesArray[0] = player1;
   entitiesArray[1] = player2;
   entitiesArray[2] = weapon;
-  
-	MultiKeys = new bool[256];
+
+  MultiKeys = new bool[256];
 	for(int i=0;i<256;i++){
 		MultiKeys[i] = 0;
 	}

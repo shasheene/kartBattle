@@ -6,6 +6,7 @@
 
 GLfloat pi=3.14159265359;
 
+
 GLfloat degToRad (GLfloat deg) {
   return (deg*pi/180);
 }

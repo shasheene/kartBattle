@@ -58,6 +58,11 @@ public:
 
   glm::vec3 pos;
   glm::vec3 boundingBox[4];
+
+
+  glm::vec3 viewSrc;
+  glm::vec3 viewDest;
+  glm::vec3 viewUp;
 };
 
 #endif

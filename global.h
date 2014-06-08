@@ -6,10 +6,12 @@
 #define GLOBAL
 
 #include "glLibAndConst.h"
-//#include "car.h"
 #include "entity.h"
 
-#define NUMENTITIES 4
+#define NUMENTITIES 3
+#define ACCELERATESPEED 0.500
+#define TURNSPEED 0.100
+#define BRAKESPEED 0.400
 
 extern Entity* player1;
 extern Entity* player2;

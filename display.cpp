@@ -3,21 +3,13 @@
  */
 
 #include "display.h"
+#include "movement.h"
 #include "global.h"
 #include <cstdio>
+#include <iostream>
 
 
 //Could place these inside of the object files and refer to them from there
-
-	//Follow Player 1
-  glm::vec3 P1view1(0.0, 0.5, -2.0);
-  glm::vec3 P1view2(0.0, 0.0, 0.0);
-  glm::vec3 P1view3(0.0, 1.0, 0.0);
-
-	//Follow Player 2
-  glm::vec3 P2view1(2.0, 0.5, -2.0);
-  glm::vec3 P2view2(2.0, 0.0, 0.0);
-  glm::vec3 P2view3(0.0, 1.0, 0.0);
 
 	//weapon
   glm::vec3 WeaPos(0.0, -0.1, 0.0);
@@ -26,8 +18,7 @@
 
 
 void display (void) {
-  Movement();
-  
+  movement();
   for (int i=0; i<NUMENTITIES; i++) {
     entitiesArray[i]->update(entitiesArray, NUMENTITIES);
   }
@@ -45,7 +36,8 @@ void display (void) {
   
 	//1st screen top
   glViewport(0, SCREENHEIGHT/2+1, SCREENWIDTH, SCREENHEIGHT/2);
-  view = glm::lookAt(P1view1, P1view2, P1view3);
+  view = glm::lookAt(player1->viewSrc, player1->viewDest, player1->viewUp);
+
   projection = glm::perspective(45.0f, 1.0f*SCREENWIDTH/SCREENHEIGHT, 0.1f, 100.0f);
 
   //PLAYER1
@@ -77,7 +69,7 @@ void display (void) {
 
 	//2ed screen, bottom
   glViewport(0, 0, SCREENWIDTH, SCREENHEIGHT/2);
-  view = glm::lookAt(P2view1, P2view2, P2view3);
+  view = glm::lookAt(player2->viewSrc, player2->viewDest, player2->viewUp);
 
   //PLAYER1
   anim = glm::rotate(glm::mat4(1.0f),degToRad(player1->angle), axis_y);
@@ -184,150 +176,3 @@ void drawObject(Entity * my_entity,  glm::mat4 current_mvp, glm::mat4 model, glm
         current_group++;
    }//end looping through groups
 }
-
-
-
-void keyboardPress( unsigned char key, int x, int y )
-{
-	MultiKeys[key] = true;
-}
-
-void keyboardNoPress( unsigned char key, int x, int y )
-{
-	MultiKeys[key] = false;
-}
-
-void Movement(void)
-{
-		//Exit
-	if(MultiKeys[033]){
-        exit( EXIT_SUCCESS );
-	}
-
-		//Movement Player 1
-	if(MultiKeys['w']){
-			player1->pos[0] = player1->pos[0]+(0.005 * sin(degToRad(player1->angle)));
-			player1->pos[2] = player1->pos[2]+(0.005 * cos(degToRad(player1->angle)));
-			P1view2 = player1->pos;
-			P1view1[0] = P1view2[0]-(2 * sin(degToRad(player1->angle)));
-			P1view1[2] = P1view2[2]-(2 * cos(degToRad(player1->angle)));
-	}
-	if(MultiKeys['s']){
-			player1->pos[0] = player1->pos[0]-(0.005 * sin(degToRad(player1->angle)));
-			player1->pos[2] = player1->pos[2]-(0.005 * cos(degToRad(player1->angle)));
-			P1view2 = player1->pos;
-			P1view1[0] = P1view2[0]-(2 * sin(degToRad(player1->angle)));
-			P1view1[2] = P1view2[2]-(2 * cos(degToRad(player1->angle)));
-	}
-		//Turning forwards
-	if(MultiKeys['a'] && MultiKeys['w']){
-		//player1->pos[0] = player1->pos[0]+0.005;
-		if(player1->angle > 360){
-			player1->angle = 0;
-			player1->angle = player1->angle + 0.2;
-		}
-		else{
-			player1->angle = player1->angle + 0.2;
-		}
-	}
-	if(MultiKeys['d'] && MultiKeys['w']){
-		//player1->pos[0] = player1->pos[0]-0.005;
-		if(player1->angle < 0){
-			player1->angle = 360;
-			player1->angle = player1->angle - 0.2;
-		}
-		else{
-			player1->angle = player1->angle - 0.2;
-		}
-	}
-		//Turning Backwards
-	if(MultiKeys['d'] && MultiKeys['s']){
-		//player1->pos[0] = player1->pos[0]+0.005;
-		if(player1->angle > 360){
-			player1->angle = 0;
-			player1->angle = player1->angle + 0.2;
-		}
-		else{
-			player1->angle = player1->angle + 0.2;
-		}
-	}
-	if(MultiKeys['a'] && MultiKeys['s']){
-		//player1->pos[0] = player1->pos[0]-0.005;
-		if(player1->angle < 0){
-			player1->angle = 360;
-			player1->angle = player1->angle - 0.2;
-		}
-		else{
-			player1->angle = player1->angle - 0.2;
-		}
-	}
-
-
-		//Movement Player 2
-	if(MultiKeys['i']){
-			player2->pos[0] = player2->pos[0]+(0.005 * sin(degToRad(player2->angle)));
-			player2->pos[2] = player2->pos[2]+(0.005 * cos(degToRad(player2->angle)));
-			P2view2 = player2->pos;
-			P2view1[0] = P2view2[0]-(2 * sin(degToRad(player2->angle)));
-			P2view1[2] = P2view2[2]-(2 * cos(degToRad(player2->angle)));
-	}
-	if(MultiKeys['k']){
-			player2->pos[0] = player2->pos[0]-(0.005 * sin(degToRad(player2->angle)));
-			player2->pos[2] = player2->pos[2]-(0.005 * cos(degToRad(player2->angle)));
-			P2view2 = player2->pos;
-			P2view1[0] = P2view2[0]-(2 * sin(degToRad(player2->angle)));
-			P2view1[2] = P2view2[2]-(2 * cos(degToRad(player2->angle)));
-	}
-		//Turning forwards
-	if(MultiKeys['j'] && MultiKeys['i']){
-		//player2->pos[0] = player2->pos[0]+0.005;
-		if(player2->angle > 360){
-			player2->angle = 0;
-			player2->angle = player2->angle + 0.2;
-		}
-		else{
-			player2->angle = player2->angle + 0.2;
-		}
-	}
-	if(MultiKeys['l'] && MultiKeys['i']){
-		//player2->pos[0] = player2->pos[0]-0.005;
-		if(player2->angle < 0){
-			player2->angle = 360;
-			player2->angle = player2->angle - 0.2;
-		}
-		else{
-			player2->angle = player2->angle - 0.2;
-		}
-	}
-		//Turning Backwards
-	if(MultiKeys['l'] && MultiKeys['k']){
-		//player2->pos[0] = player2->pos[0]+0.005;
-		if(player2->angle > 360){
-			player2->angle = 0;
-			player2->angle = player2->angle + 0.2;
-		}
-		else{
-			player2->angle = player2->angle + 0.2;
-		}
-	}
-	if(MultiKeys['j'] && MultiKeys['k']){
-		//player2->pos[0] = player2->pos[0]-0.005;
-		if(player2->angle < 0){
-			player2->angle = 360;
-			player2->angle = player2->angle - 0.2;
-		}
-		else{
-			player2->angle = player2->angle - 0.2;
-		}
-	}
-
-		//Fire Weapon Player 1
-	if(MultiKeys['e']){
-		weapon->angle = player1->angle;
-		WeaPos[0] = player1->pos[0]+(1 * sin(degToRad(weapon->angle)));
-		WeaPos[2] = player1->pos[2]+(1 * cos(degToRad(weapon->angle)));
-		WeaTimer = 0;
-	}
-}
-
-
