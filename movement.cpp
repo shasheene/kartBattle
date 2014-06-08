@@ -27,13 +27,8 @@ void movement(void)
 	int time = glutGet(GLUT_ELAPSED_TIME)/1000;
 		//Movement Player 1
 	if(MultiKeys['w']){
-<<<<<<< HEAD
 			player1->pos[0] = player1->pos[0]+(timeDiff*0.005 * sin(degToRad(player1->angle)));
 			player1->pos[2] = player1->pos[2]+(timeDiff*0.005 * cos(degToRad(player1->angle)));
-=======
-			player1->pos[0] = player1->pos[0]+(0.005 * sin(degToRad(player1->angle)));
-			player1->pos[2] = player1->pos[2]+(0.005 * cos(degToRad(player1->angle)));
->>>>>>> 1a28e1bd1c6b0e2550d4e8b6f269dd249c79fa2f
 			player1->viewDest = player1->pos;
 			player1->viewSrc[0] = player1->viewDest[0]-(2 * sin(degToRad(player1->angle)));
 			player1->viewSrc[2] = player1->viewDest[2]-(2 * cos(degToRad(player1->angle)));
