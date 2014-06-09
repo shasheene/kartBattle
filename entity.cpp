@@ -13,12 +13,12 @@
 
 using namespace std;
 
-Entity::Entity(char* carFilepath, glm::vec3 posVector, GLfloat facing, glm::vec3* bounding, GLfloat size) {
+Entity::Entity(char* carFilepath, glm::vec3 posVector, GLfloat facing, glm::vec3* bounding, GLfloat size, char* objName) {
   initialize(carFilepath, size);
   pos = posVector;
   angle = facing;
+  score =0;
   
-
   viewDest = posVector;
   viewSrc[0] = viewDest[0]-(2 * sin(degToRad(angle)));
   viewSrc[1] = 0.5;
@@ -30,6 +30,9 @@ Entity::Entity(char* carFilepath, glm::vec3 posVector, GLfloat facing, glm::vec3
   for (int i=0;i<4;i++){
     boundingBox[i] = bounding[i];
   }
+
+  name = new char[40];
+  strcpy(name,objName); //avoids deprecated conversion
 }
 
 void Entity::update(Entity ** entityArray, int numEntities){
@@ -38,7 +41,7 @@ void Entity::update(Entity ** entityArray, int numEntities){
       GLfloat x_speed = cos(degToRad(entityArray[i]->angle));
       GLfloat y_speed = sin(degToRad(entityArray[i]->angle));
 
-      cerr << "entityArray["<< i <<"] " << entityArray[i]->pos[0] << "," << entityArray[i]->pos[2] << endl;
+      //cerr << "entityArray["<< i <<"] " << entityArray[i]->pos[0] << "," << entityArray[i]->pos[2] << endl;
 
       //For now, opposite's position, to our bounding box
       if ((entityArray[i]->pos[2] < (this->pos[2] + this->boundingBox[0][2])//top horizontal, bottom horizontal
@@ -47,11 +50,21 @@ void Entity::update(Entity ** entityArray, int numEntities){
 	  && (entityArray[i]->pos[0] > (this->pos[0] + this->boundingBox[2][0]) // left vert, right vert
 	      && entityArray[i]->pos[0] < (this->pos[0] + this->boundingBox[3][0]))
 	  ) {
-	if (i ==2) {
-	    entityArray[i]->angle += 45;
+	//Messy code, refactor later
+	if (i ==2 || i==3) {
+	  entityArray[i]->angle += 45;
+	  if (i ==2 && strcmp(this->name,"player2")==0){
+	    this->score++;
+	    cerr << "Player 1 Score is " << this->score << endl;
 	  }
+
+	  if (i ==3 && strcmp(this->name,"player1")==0){
+	    this->score++;
+	    cerr << "Player 2 Score is " << this->score << endl;
+	  }
+	}
+	//cerr << "COLLIDED\n";
       }
-      cerr << "COLLIDED\n";
     
     }
   }

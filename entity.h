@@ -49,7 +49,7 @@ using namespace std;
 
 class Entity {
 public:
-  Entity(char*, glm::vec3, GLfloat, glm::vec3*, GLfloat);
+  Entity(char*, glm::vec3, GLfloat, glm::vec3*, GLfloat, char *);
   Entity();
   void update(Entity **, int);
 
@@ -58,7 +58,10 @@ public:
   struct model_info my_model;
   struct shader_program_info my_program;
   GLfloat angle;
-
+  
+  int score;
+  
+  char * name;
   glm::vec3 pos;
   glm::vec3 boundingBox[4];
 

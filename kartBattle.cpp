@@ -11,6 +11,9 @@ Entity * weapon2;
 Entity ** entitiesArray;
 bool * MultiKeys;
 
+int player1Score;
+int player2Score;
+
 int main(int argc, char* argv[]) {
 
   glutInit(&argc, argv);
@@ -34,10 +37,11 @@ glm::vec3 carBounding[4] = {
   glm::vec3(1.0,0.0, 0.0) //right vertical line
   };
 
- player1 = new Entity("res/car1/car-n.obj", glm::vec3(2.0, 0.0, -5.0), degToRad(0.0f), carBounding, 1.0);
- player2 = new Entity("res/car2/car-n.obj", glm::vec3(2.0, 0.0, 5.0), 180.0f, carBounding, 1.0);
- weapon = new Entity("res/ball/Football.obj", glm::vec3(2.0, 0.0, 0.0 ), 0.0f, carBounding, 0.4);
- weapon2 = new Entity("res/ball/Football.obj", glm::vec3(2.0, 0.0, 0.0 ), 0.0f, carBounding, 0.4);
+
+ player1 = new Entity("res/car1/car-n.obj", glm::vec3(2.0, 0.0, -5.0), degToRad(0.0f), carBounding, 1.0,"player1");
+ player2 = new Entity("res/car2/car-n.obj", glm::vec3(2.0, 0.0, 5.0), 180.0f, carBounding, 1.0,"player2");
+ weapon = new Entity("res/ball/Football.obj", glm::vec3(2.0, 0.0, 0.0 ), 0.0f, carBounding, 0.4,"weapon");
+ weapon2 = new Entity("res/ball/Football.obj", glm::vec3(2.0, 0.0, 0.0 ), 0.0f, carBounding, 0.4,"weapon2");
 
   entitiesArray = new Entity*[NUMENTITIES];
   entitiesArray[0] = player1;
