@@ -8,8 +8,8 @@ GLM_MOD=lib/GLM_MOD
 
 all: kartBattle
 
-kartBattle:  soil.o display.o idle.o entity.o kartBattle.o image_helper.o stb_image_aug.o image_DXT.o global.o movement.o glLibAndConst.o
-	$(CXX) kartBattle.o display.o idle.o entity.o movement.o glLibAndConst.o $(LINUX_GL_OPTIONS) SOIL.o image_helper.o stb_image_aug.o image_DXT.o global.o -o kartBattle 
+kartBattle:  soil.o display.o idle.o entity.o kartBattle.o image_helper.o stb_image_aug.o image_DXT.o global.o movement.o glLibAndConst.o shader_utils.o
+	$(CXX) kartBattle.o display.o idle.o entity.o movement.o glLibAndConst.o $(LINUX_GL_OPTIONS) SOIL.o image_helper.o stb_image_aug.o image_DXT.o global.o shader_utils.o -o kartBattle 
 
 #
 #$(CXX) kartBattle.o display.o car.o SOIL.o glm_mod.o image_helper.o stb_image_aug.o image_DXT.o -o kartBattle 
@@ -17,7 +17,7 @@ kartBattle:  soil.o display.o idle.o entity.o kartBattle.o image_helper.o stb_im
 kartBattle.o: main.cpp glLibAndConst.h kartBattle.cpp kartBattle.h movement.h
 	$(CXX) -c kartBattle.cpp 
 
-display.o: display.cpp display.h glLibAndConst.h movement.h
+display.o: display.cpp display.h glLibAndConst.h movement.h shader_utils.h
 	$(CXX) -c display.cpp
 
 idle.o: idle.cpp idle.h glLibAndConst.h global.h
@@ -34,6 +34,9 @@ glLibAndConst.o: glLibAndConst.cpp glLibAndConst.h
 
 movement.o: movement.cpp movement.h global.h glLibAndConst.h entity.h
 	$(CXX) -c movement.cpp
+
+shader_utils.o: shader_utils.cpp shader_utils.h
+	$(CXX) -c shader_utils.cpp
 
 #lib/SOIL/SOIL.h lib/SOIL/SOIL.cpp
 soil.o: 
