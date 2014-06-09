@@ -20,6 +20,11 @@ void idle() {
 		weapon->pos[2] = weapon->pos[2]+(timeDiff*0.02 * cos(degToRad(weapon->angle)));
   		WeaTimer ++;
 	}
+	if(WeaTimer2 < 5000){
+		weapon2->pos[0] = weapon2->pos[0]+(timeDiff*0.02 * sin(degToRad(weapon2->angle)));
+		weapon2->pos[2] = weapon2->pos[2]+(timeDiff*0.02 * cos(degToRad(weapon2->angle)));
+  		WeaTimer2 ++;
+	}
 
   glutPostRedisplay();
 }

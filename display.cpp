@@ -13,8 +13,7 @@
 
 	//weapon
   int WeaTimer = 50000;
-
-
+  int WeaTimer2 = 50000;
 
 
 void display (void) {
@@ -63,6 +62,13 @@ void display (void) {
 
 	 drawObject(weapon, current_mvp, model, view);
   }
+  if(WeaTimer2 < 5000){
+	 anim = glm::rotate(glm::mat4(1.0f), degToRad(weapon2->angle), axis_y);
+	 model = glm::translate(glm::mat4(1.0f), weapon2->pos);
+	 current_mvp = projection * view * model * anim;
+
+	 drawObject(weapon2, current_mvp, model, view);
+  }
 
 
 //---------------------------
@@ -92,6 +98,13 @@ void display (void) {
 	 current_mvp = projection * view * model * anim;
 
 	 drawObject(weapon, current_mvp, model, view);
+  }
+  if(WeaTimer2 < 5000){
+	 anim = glm::rotate(glm::mat4(1.0f), degToRad(weapon2->angle), axis_y);
+	 model = glm::translate(glm::mat4(1.0f), weapon2->pos);
+	 current_mvp = projection * view * model * anim;
+
+	 drawObject(weapon2, current_mvp, model, view);
   }
 
 

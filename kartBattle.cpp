@@ -7,6 +7,7 @@
 Entity * player1;
 Entity * player2;
 Entity * weapon;
+Entity * weapon2;
 Entity ** entitiesArray;
 bool * MultiKeys;
 
@@ -36,11 +37,13 @@ glm::vec3 carBounding[4] = {
  player1 = new Entity("res/car1/car-n.obj", glm::vec3(2.0, 0.0, -5.0), degToRad(0.0f), carBounding, 1.0);
  player2 = new Entity("res/car2/car-n.obj", glm::vec3(2.0, 0.0, 5.0), 180.0f, carBounding, 1.0);
  weapon = new Entity("res/ball/Football.obj", glm::vec3(2.0, 0.0, 0.0 ), 0.0f, carBounding, 0.4);
+ weapon2 = new Entity("res/ball/Football.obj", glm::vec3(2.0, 0.0, 0.0 ), 0.0f, carBounding, 0.4);
 
   entitiesArray = new Entity*[NUMENTITIES];
   entitiesArray[0] = player1;
   entitiesArray[1] = player2;
   entitiesArray[2] = weapon;
+  entitiesArray[3] = weapon2;
 
   MultiKeys = new bool[256];
 	for(int i=0;i<256;i++){
