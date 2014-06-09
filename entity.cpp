@@ -268,6 +268,8 @@ void main(void)\n \
   vec3 viewDirection = normalize(vec3(v_inv * vec4(0.0, 0.0, 0.0, 1.0) - m * v_coord4));\n \
   vec3 lightDirection;\n \
   float attenuation;\n \
+  diffuseColor = vec3(scene_ambient) * vec3(mymaterial.ambient);\n \
+  specularColor = vec3(0.0, 0.0, 0.0);\n \
   for (int index = 0; index < numberOfLights; index++)\n \
   {\n \
   if (lights[index].position.w == 0.0) // directional light\n \
@@ -296,7 +298,6 @@ void main(void)\n \
             }\n \
         }\n \
     }\n \
-  vec3 ambientLighting = vec3(scene_ambient);\n \
   vec3 diffuseReflection = attenuation\n \
     * vec3(lights[index].diffuse)\n \
     * max(0.0, dot(normalDirection, lightDirection));\n \
@@ -311,7 +312,7 @@ void main(void)\n \
         * pow(max(0.0, dot(reflect(-lightDirection, normalDirection), viewDirection)),\n \
               mymaterial.shininess);\n \
     }\n \
-  diffuseColor = diffuseColor + ambientLighting + diffuseReflection;\n \
+  diffuseColor = diffuseColor + diffuseReflection;\n \
   specularColor = specularColor + specularReflection;\n \
   }\n \
   texCoords=vtexcoords; \n \
