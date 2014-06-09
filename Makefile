@@ -14,7 +14,7 @@ kartBattle:  soil.o display.o idle.o entity.o kartBattle.o image_helper.o stb_im
 #
 #$(CXX) kartBattle.o display.o car.o SOIL.o glm_mod.o image_helper.o stb_image_aug.o image_DXT.o -o kartBattle 
 
-kartBattle.o: main.cpp glLibAndConst.h kartBattle.cpp kartBattle.h movement.h
+kartBattle.o: glLibAndConst.h kartBattle.cpp kartBattle.h movement.h
 	$(CXX) -c kartBattle.cpp 
 
 display.o: display.cpp display.h glLibAndConst.h movement.h shader_utils.h
