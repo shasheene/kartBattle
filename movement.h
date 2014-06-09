@@ -14,6 +14,7 @@
 
 void keyboardPress( unsigned char, int, int );
 void keyboardNoPress( unsigned char, int, int );
+bool carDistance();
 void movement();
 
 #endif
