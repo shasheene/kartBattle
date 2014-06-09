@@ -54,7 +54,7 @@ glm::vec3 carBounding[4] = {
 		MultiKeys[i] = 0;
 	}
 
-  //  init_resources();//car
+    init_resources();//car
   //glEnable(GL_BLEND);
   glEnable(GL_DEPTH_TEST);
 
