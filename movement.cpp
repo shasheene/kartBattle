@@ -46,6 +46,11 @@ void movement(void)
 			{
 				player1->pos = oldPos;
 			}
+				// this makes sure that cars do not cross over the boundary walls, wall=20, boundary=18+view=2
+			else if(player1->pos[0] > 18 || player1->pos[0] < -18 || player1->pos[2] > 18 || player1->pos[2] < -18)
+			{
+				player1->pos = oldPos;
+			}
 			else
 			{
 				player1->viewDest = player1->pos;
@@ -78,6 +83,10 @@ void movement(void)
 			player1->pos[0] = player1->pos[0]-(timeDiff*0.005 * sin(degToRad(player1->angle)));
 			player1->pos[2] = player1->pos[2]-(timeDiff*0.005 * cos(degToRad(player1->angle)));
 			if(carDistance())
+			{
+				player1->pos = oldPos;
+			}
+			else if(player1->pos[0] > 18 || player1->pos[0] < -18 || player1->pos[2] > 18 || player1->pos[2] < -18)
 			{
 				player1->pos = oldPos;
 			}
@@ -121,6 +130,10 @@ void movement(void)
 			{
 				player2->pos = oldPos;
 			}
+			else if(player2->pos[0] > 18 || player2->pos[0] < -18 || player2->pos[2] > 18 || player2->pos[2] < -18)
+			{
+				player2->pos = oldPos;
+			}
 			else
 			{
 				player2->viewDest = player2->pos;
@@ -154,6 +167,10 @@ void movement(void)
 			player2->pos[0] = player2->pos[0]-(timeDiff*0.005 * sin(degToRad(player2->angle)));
 			player2->pos[2] = player2->pos[2]-(timeDiff*0.005 * cos(degToRad(player2->angle)));
 			if(carDistance())
+			{
+				player2->pos = oldPos;
+			}
+			else if(player2->pos[0] > 18 || player2->pos[0] < -18 || player2->pos[2] > 18 || player2->pos[2] < -18)
 			{
 				player2->pos = oldPos;
 			}
