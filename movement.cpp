@@ -208,15 +208,15 @@ void movement(void)
 		//Fire Weapon Player 1
 	if(MultiKeys['e']){
 		weapon->angle = player1->angle;
-		weapon->pos[0] = player1->pos[0]+(1.3 * sin(degToRad(weapon->angle)));
-		weapon->pos[2] = player1->pos[2]+(1.3 * cos(degToRad(weapon->angle)));
+		weapon->pos[0] = player1->pos[0]+(1.4 * sin(degToRad(weapon->angle)));
+		weapon->pos[2] = player1->pos[2]+(1.4 * cos(degToRad(weapon->angle)));
 		WeaTimer = 0;
 	}
 		//Fire Weapon Player 1
 	if(MultiKeys['u']){
 		weapon2->angle = player2->angle;
-		weapon2->pos[0] = player2->pos[0]+(1.3 * sin(degToRad(weapon2->angle)));
-		weapon2->pos[2] = player2->pos[2]+(1.3 * cos(degToRad(weapon2->angle)));
+		weapon2->pos[0] = player2->pos[0]+(1.4 * sin(degToRad(weapon2->angle)));
+		weapon2->pos[2] = player2->pos[2]+(1.4 * cos(degToRad(weapon2->angle)));
 		WeaTimer2 = 0;
 	}
 }
